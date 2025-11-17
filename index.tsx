@@ -4,7 +4,7 @@ import {
   initStickyScrollAnimation,
 } from "./lib/observers.ts";
 import { initThemeSwitcher } from "./lib/ui.ts";
-import i18next, { supportedLanguages } from "./i18n.ts";
+import i18next, { supportedLanguages } from "./src/i18n.ts";
 
 /**
  * Main application class to organize and initialize all UI components and behaviors.
@@ -66,6 +66,11 @@ class CodeWikiApp {
           (element as HTMLInputElement).placeholder = translation;
         } else if (element.tagName === 'OPTION') {
           (element as HTMLOptionElement).text = translation;
+        } else if (element.tagName === 'TITLE') {
+          element.textContent = translation;
+          document.title = translation;
+        } else if (element.tagName === 'META' && element.getAttribute('name') === 'description') {
+          element.setAttribute('content', translation);
         } else {
           element.textContent = translation;
         }

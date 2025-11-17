@@ -1,8 +1,6 @@
 {
   "title": "CodeWiki",
-  "meta": {
-    "description": "CodeWiki - Explorer et rechercher des dépôts de code"
-  },
+  "description": "CodeWiki - Explorer et rechercher des dépôts de code",
   "header": {
     "home": "Accueil",
     "searchPlaceholder": "Trouver des dépôts open source",
@@ -86,7 +84,12 @@
     }
   },
   "footer": {
-    "googleForDevelopers": "Google for developers"
+    "privacy": "Politique de confidentialité",
+    "terms": "Conditions d'utilisation",
+    "developers": "Développeurs",
+    "support": "Support",
+    "developerSite": "Site des développeurs",
+    "languageLabel": "Langue"
   },
   "languageSwitcher": {
     "label": "Langue"

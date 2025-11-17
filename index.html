@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 
 <head>
   <meta charset="UTF-8">
   <link rel="icon" type="image/svg+xml" href="/vite.svg">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CodeWiki - 代码维基</title>
-  <meta name="description" content="CodeWiki - 探索和搜索代码仓库">
+  <title data-i18n="title">CodeWiki</title>
+  <meta name="description" content="CodeWiki" data-i18n="description">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
@@ -25,12 +25,13 @@
     <landing-page>
       <app-bar>
         <header class="header-content small-width">
-          <a aria-label="首页" class="app-title" href="https://codewiki.google/">
+          <a aria-label="Home" class="app-title" href="https://codewiki.google/" data-i18n="header.home">
             <img data-test-id="product-logo" class="logo" alt="Code Wiki logo"
               src="https://www.gstatic.com/_/boq-sdlc-agents-ui/_/r/JA1YkbZh5pk.svg">
           </a>
           <div class="header-search shine">
-            <input type="text" autocomplete="off" class="header-search-input" placeholder="查找开源仓库" tabindex="-1">
+            <input type="text" autocomplete="off" class="header-search-input"
+              placeholder="Find open source repositories" data-i18n="header.searchPlaceholder" tabindex="-1">
             <button class="header-search-button" disabled="" tabindex="-1">
               <span class="google-symbols">search</span>
             </button>
@@ -93,15 +94,15 @@
                 data-theme-img="light" style="display: none;"
                 class="absolute left-1/2 top-[-150px] w-[1352px] h-[838px] -translate-x-1/2 pointer-events-none">
             </div>
-            <img alt="主题相关图片" class="hidden max-md:block mt-[40px] w-full"
+            <img alt="Theme related image" class="hidden max-md:block mt-[40px] w-full"
               src="https://codewiki.google/assets/mobile-hero-dark.png" data-theme-img="dark">
-            <img alt="主题相关图片" class="hidden max-md:block mt-[40px] w-full"
+            <img alt="Theme related image" class="hidden max-md:block mt-[40px] w-full"
               src="https://codewiki.google/assets/mobile-hero-light.png" data-theme-img="light" style="display: none;">
           </section>
           <section class="sticky-hero-cube-section"></section>
 
           <section class="featured-section">
-            <h2>精选仓库</h2>
+            <h2 data-i18n="featured.title">Featured Repositories</h2>
             <div class="repositories-grid">
               <a class="repo-card shine" href="https://codewiki.google/github.com/google-gemini/gemini-cli">
                 <div class="repo-content">
@@ -111,7 +112,8 @@
                       src="https://codewiki.google/assets/avatars/google-gemini.png" alt="google-gemini">
                   </div>
                   <p class="repo-description">
-                    一个开源AI代理，将Gemini的强大功能直接带到您的终端。
+                    <span data-i18n="featured.geminiCli.description">An open-source AI agent that brings Gemini's
+                      powerful capabilities directly to your terminal.</span>
                   </p>
                   <span class="star-count"><span class="google-symbols">star</span>81.5k
                   </span>
@@ -124,7 +126,7 @@
                     <img width="100" height="100" class="repo-avatar"
                       src="https://codewiki.google/assets/avatars/golang.png" alt="golang">
                   </div>
-                  <p class="repo-description">Go编程语言</p>
+                  <p class="repo-description" data-i18n="featured.go.description">Go programming language</p>
                   <span class="star-count"><span class="google-symbols">star</span>130.7k
                   </span>
                 </div>
@@ -137,7 +139,8 @@
                       src="https://codewiki.google/assets/avatars/flutter.png" alt="flutter">
                   </div>
                   <p class="repo-description">
-                    Flutter让快速构建美观的移动及跨平台应用变得简单
+                    <span data-i18n="featured.flutter.description">Flutter makes it simple to build beautiful, fast
+                      mobile and cross-platform apps</span>
                   </p>
                   <span class="star-count"><span class="google-symbols">star</span>173.7k
                   </span>
@@ -150,7 +153,8 @@
                     <img width="100" height="100" class="repo-avatar"
                       src="https://codewiki.google/assets/avatars/kubernetes.png" alt="kubernetes">
                   </div>
-                  <p class="repo-description">生产级容器调度和管理</p>
+                  <p class="repo-description" data-i18n="featured.kubernetes.description">Production-grade container
+                    scheduling and management</p>
                   <span class="star-count"><span class="google-symbols">star</span>118.4k
                   </span>
                 </div>
@@ -162,7 +166,8 @@
                     <img width="100" height="100" class="repo-avatar"
                       src="https://codewiki.google/assets/avatars/facebook.png" alt="facebook">
                   </div>
-                  <p class="repo-description">用于Web和原生用户界面的库。</p>
+                  <p class="repo-description" data-i18n="featured.react.description">A library for building user
+                    interfaces for web and native</p>
                   <span class="star-count"><span class="google-symbols">star</span>240.3k
                   </span>
                 </div>
@@ -175,7 +180,8 @@
                       src="https://codewiki.google/assets/avatars/modelcontextprotocol.png" alt="modelcontextprotocol">
                   </div>
                   <p class="repo-description">
-                    Model Context Protocol服务器和客户端的官方Python SDK
+                    <span data-i18n="featured.pythonSdk.description">Official Python SDK for Model Context Protocol
+                      servers and clients</span>
                   </p>
                   <span class="star-count"><span class="google-symbols">star</span>19.8k
                   </span>
@@ -188,13 +194,14 @@
               <div class="split-sections">
                 <app-split-section>
                   <section class="split-section">
-                    <h2>
-                      使用您自己的私有仓库试用
-                      <span class="tag shine"><span class="tag-content">即将推出</span></span>
+                    <h2 data-i18n="privateRepo.title">
+                      Try with your own private repositories
+                      <span class="tag shine"><span class="tag-content" data-i18n="privateRepo.comingSoon">Coming
+                          Soon</span></span>
                     </h2>
-                    <p>
-                      停止文档编写。开始理解理解。连接您的仓库，获得完全交互式的Code
-                      Wiki， 与每次更改完美同步。不再有过时的文档。永远。
+                    <p data-i18n="privateRepo.description">
+                      Stop documenting. Start understanding. Connect your repositories to get fully interactive Code
+                      Wikis that sync perfectly with every change. No more outdated documentation. Ever.
                     </p>
                     <a target="_blank" class="cta-card invert-theme shine"
                       href="https://developers.google.com/profile/badges/community/sdlcagents/gca-agents">
@@ -215,7 +222,7 @@
                               </radialgradient>
                             </defs>
                           </svg>
-                          可用时通知我
+                          <span data-i18n="privateRepo.notifyMe">Notify me when available</span>
                         </h3>
                       </div>
                     </a>
@@ -228,29 +235,34 @@
                 </app-split-section>
                 <app-split-section>
                   <section class="split-section">
-                    <h2>首次阅读您的应用程序 </h2>
-                    <p>为您工作的代码文档，而不是相反。</p>
+                    <h2 data-i18n="appReading.title">Read your application for the first time</h2>
+                    <p data-i18n="appReading.subtitle">Code documentation that works for you, not the other way around.
+                    </p>
                     <ul class="icon-grid">
                       <li style="--icon: 'grid_view';">
-                        <span>逐段理解您的代码</span>
+                        <span data-i18n="appReading.understandCode.title">Understand your code section by section</span>
                         <p>
-                          专注于您关心的代码。选择一个部分并深入了解其工作原理。
+                          <span data-i18n="appReading.understandCode.description">Focus on the code you care about.
+                            Select a section and dive deep into how it works.</span>
                         </p>
                       </li>
                       <li style="--icon: 'bolt';">
-                        <span>自动生成</span>
+                        <span data-i18n="appReading.autoGenerated.title">Automatically generated</span>
                         <p>
-                          我们的AI代理自动生成并维护来自代码的丰富、交互式知识库。
+                          <span data-i18n="appReading.autoGenerated.description">Our AI agents automatically generate
+                            and maintain rich, interactive knowledge bases from your code.</span>
                         </p>
                       </li>
                       <li style="--icon: 'rotate_left';">
-                        <span>始终保持最新</span>
-                        <p>每次合并拉取请求时，相关文档都会自动更新。</p>
+                        <span data-i18n="appReading.alwaysUpToDate.title">Always up to date</span>
+                        <p data-i18n="appReading.alwaysUpToDate.description">Every time a pull request is merged,
+                          relevant documentation is automatically updated.</p>
                       </li>
                       <li style="--icon: 'code';">
-                        <span>链接回您的代码</span>
+                        <span data-i18n="appReading.linkBack.title">Link back to your code</span>
                         <p>
-                          从架构概览即时跳转到确切的服务，或从函数描述跳转到仓库中的定义。
+                          <span data-i18n="appReading.linkBack.description">Jump instantly from architecture overview to
+                            the exact service, or from function description to the definition in your repository.</span>
                         </p>
                       </li>
                     </ul>
@@ -263,17 +275,19 @@
                 </app-split-section>
                 <app-split-section>
                   <section class="split-section">
-                    <h2>与您的代码库对话 </h2>
-                    <p>
-                      用自然语言询问有关架构、查找函数定义和理解复杂逻辑的问题。
-                      就像拥有24/7待命的工程师一样。
+                    <h2 data-i18n="talkCodebase.title">Talk to your codebase</h2>
+                    <p data-i18n="talkCodebase.description">
+                      Ask questions about architecture, find function definitions, and understand complex logic in
+                      natural language. Like having an engineer on call 24/7.
                     </p>
                     <ul class="icon-list">
-                      <li style="--icon: 'chat_bubble_outline';">
-                        与您的代码库聊天
+                      <li style="--icon: 'chat_bubble_outline';" data-i18n="talkCodebase.chat">
+                        Chat with your codebase
                       </li>
-                      <li style="--icon: 'search';">即时找到您需要的内容</li>
-                      <li style="--icon: 'speed';">低延迟，高质量</li>
+                      <li style="--icon: 'search';" data-i18n="talkCodebase.find">Find what you need
+                        instantly</li>
+                      <li style="--icon: 'speed';" data-i18n="talkCodebase.quality">Low latency, high
+                        quality</li>
                     </ul>
                     <img alt="" loading="lazy" decoding="async" class="mobile-image"
                       src="https://codewiki.google/assets/animations/home/talk-codebase-dark.png" data-theme-img="dark">
@@ -311,7 +325,7 @@
 
           <section class="browser-section">
             <div class="browser-section-content">
-              <h2>为您的软件添加缺失的维度</h2>
+              <h2 data-i18n="browserSection.title">Add the missing dimension to your software</h2>
               <div class="desktop-graphic">
                 <div class="screen shine">
                   <div class="screen-content">
@@ -332,7 +346,7 @@
                             </radialgradient>
                           </defs>
                         </svg>
-                        <p>查看Code Wiki的实际应用</p>
+                        <p data-i18n="browserSection.cta">See Code Wiki in action</p>
                         <span class="google-symbols arrow">arrow_outward</span>
                       </div>
                     </a>
@@ -418,15 +432,20 @@
           </svg>
         </div>
         <div class="footer-links">
-          <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">隐私政策</a>
-          <a href="https://policies.google.com/terms" target="_blank" rel="noopener noreferrer">条款</a>
-          <a href="https://developers.google.com/site-terms" target="_blank" rel="noopener noreferrer">开发者</a>
-          <a href="https://support.google.com" target="_blank" rel="noopener noreferrer">支持</a>
-          <a href="https://developers.google.com/" target="_blank" rel="noopener noreferrer">开发者网站</a>
+          <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer"
+            data-i18n="footer.privacy">Privacy Policy</a>
+          <a href="https://policies.google.com/terms" target="_blank" rel="noopener noreferrer"
+            data-i18n="footer.terms">Terms</a>
+          <a href="https://developers.google.com/site-terms" target="_blank" rel="noopener noreferrer"
+            data-i18n="footer.developers">Developers</a>
+          <a href="https://support.google.com" target="_blank" rel="noopener noreferrer"
+            data-i18n="footer.support">Support</a>
+          <a href="https://developers.google.com/" target="_blank" rel="noopener noreferrer"
+            data-i18n="footer.developerSite">Developer Site</a>
           <a href="https://www.google.com/" target="_blank" rel="noopener noreferrer">Google</a>
         </div>
         <div class="footer-locale">
-          <select aria-label="语言">
+          <select aria-label="Language" data-i18n="footer.languageLabel">
             <option value="zh-CN">简体中文</option>
             <option value="en">English</option>
           </select>
