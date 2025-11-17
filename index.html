@@ -1,0 +1,1036 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr" data-theme="dark">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>Code Wiki</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="shortcut icon" href="https://www.gstatic.com/_/boq-sdlc-agents-ui/_/r/OuUQ4UTRuCo.ico">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500&family=Google+Sans+Text:wght@400;500&family=Google+Sans+Code&family=Roboto:wght@400;500&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons|Material+Icons+Outlined">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Symbols:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+  <style>
+    /* --- 1. Global Styles & Variables --- */
+    :root {
+      --surface: light-dark(#f9fbfe, #000);
+      --on-surface: light-dark(#002549, #fff);
+      --accent: light-dark(#44a2ff, #007af4);
+      --on-accent: light-dark(#007af4, #fff);
+      --accent-surface: light-dark(#deecfd, #253145);
+      --neutral: light-dark(#5e5e5e, #818181);
+      --app-bar-height: 104px;
+      --heading-font-family: "Google Sans", sans-serif;
+      --text-font-family: "Google Sans Text", sans-serif;
+      --code-font-family: "Google Sans Code", monospace;
+      --codewiki-applayout-spacing-inline: 24px;
+    }
+    
+    @media (max-width:768px) {
+      :root {
+        --codewiki-applayout-spacing-inline: 16px
+      }
+    }
+
+    html {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    body {
+      flex: 1 1;
+      min-height: 100%;
+      display: flex;
+      flex-direction: column;
+      margin: 0;
+      padding: 0;
+      scroll-behavior: smooth;
+      -webkit-font-smoothing: antialiased;
+      -webkit-tap-highlight-color: transparent;
+      background-color: var(--surface);
+      color: var(--on-surface);
+      font-family: var(--text-font-family);
+      overflow-x: hidden;
+    }
+
+    body:not(.dark-theme) {
+      color-scheme: light;
+    }
+    body.dark-theme {
+       color-scheme: dark;
+    }
+
+    * {
+      box-sizing: border-box;
+      min-width: 0;
+      margin: 0
+    }
+    
+    html * {
+      scroll-margin-top: var(--app-bar-height)
+    }
+
+    ::selection {
+      color: var(--on-surface);
+      background: var(--accent-surface)
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      font-family: var(--heading-font-family);
+      font-weight: 500
+    }
+    code, pre { font-family: var(--code-font-family) }
+    input:focus { outline: none }
+    
+    .google-symbols {
+      font-family: 'Google Symbols';
+      font-weight: normal;
+      font-style: normal;
+      font-size: 24px;
+      line-height: 1;
+      letter-spacing: normal;
+      text-transform: none;
+      display: inline-block;
+      white-space: nowrap;
+      word-wrap: normal;
+      direction: ltr;
+      -webkit-font-feature-settings: 'liga';
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .material-icons-outlined { font-family: 'Material Icons Outlined'; }
+    
+    sdlc-agents-root, landing-page, .app-main {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+    }
+
+    /* --- 2. Shine Animation Utility --- */
+    .shine::before,
+    .shine::after {
+      content: "";
+      position: absolute;
+      background: radial-gradient(100% 100% at right, var(--surface), var(--on-accent) 5%, var(--accent) 40%, transparent 80%);
+      offset-path: border-box;
+      offset-anchor: 100% 50%;
+      animation: trail 4s infinite linear;
+      z-index: 1;
+      transition: opacity .2s ease;
+      filter: blur(12px);
+      pointer-events: none
+    }
+
+    .shine.shine::before {
+      animation: trail 15s infinite linear;
+      opacity: .5
+    }
+
+    .shine.shine::after {
+      animation: trail-offset 15s infinite linear;
+      offset-distance: 50%
+    }
+
+    @keyframes trail {
+      to { offset-distance: 100% }
+    }
+
+    @keyframes trail-offset {
+      0% { offset-distance: 50% }
+      100% { offset-distance: 150% }
+    }
+
+    /* --- 3. Header / App Bar Component --- */
+    app-bar {
+      display: block;
+      position: -webkit-sticky;
+      position: sticky;
+      top: 0;
+      background: linear-gradient(to bottom, var(--surface), transparent 90%);
+      z-index: 10;
+      padding-inline: var(--codewiki-applayout-spacing-inline)
+    }
+
+    .header-content {
+      padding: 23px 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin: 0 auto;
+      max-width: 2000px
+    }
+
+    .header-content.small-width {
+      max-width: 1200px
+    }
+
+    .app-title {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      color: var(--on-surface);
+      transition: opacity .2s ease;
+      text-decoration: none;
+      flex-shrink: 0
+    }
+    .app-title:hover { opacity: .8 }
+    .app-title img { width: 150px; padding-block: 14px }
+
+    .header-search {
+      position: relative;
+      z-index: 1;
+      flex: 1;
+      max-width: 400px;
+      overflow: hidden;
+      display: flex;
+      background-color: color-mix(in srgb, var(--accent-surface) 95%, var(--neutral));
+      border-radius: 99px;
+      padding: 1px;
+      transition: opacity .2s ease, background-color .2s ease, scale .2s ease, transform .2s ease;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, .05);
+      opacity: 0;
+      scale: 1.2;
+      transform: translateY(-12px);
+      transform-origin: top center;
+      pointer-events: none
+    }
+
+    .header-search.visible {
+      opacity: 1;
+      scale: 1;
+      pointer-events: auto;
+      transform: translateY(0)
+    }
+    .header-search.shine:after,
+    .header-search.shine:before {
+      width: 200px;
+      aspect-ratio: 3/1
+    }
+    .header-search:focus-within { background-color: var(--accent) }
+
+    .header-search-input {
+      flex: 1;
+      padding: 18px 54px 18px 32px;
+      border: none;
+      border-radius: 99px;
+      font-size: 18px;
+      font-family: var(--text-font-family);
+      letter-spacing: -.01em;
+      z-index: 2;
+      background-color: color-mix(in srgb, var(--accent-surface) 20%, var(--surface));
+      backdrop-filter: blur(34px);
+      transition: background-color .2s ease;
+      color: var(--on-surface);
+      line-height: 20px
+    }
+    .header-search-input::placeholder { color: var(--neutral) }
+    .header-search-input::-webkit-input-placeholder { color: var(--neutral) }
+
+    .header-search-button {
+      position: absolute;
+      right: 24px;
+      top: 0;
+      bottom: 0;
+      padding: 8px;
+      margin: auto 0;
+      height: fit-content;
+      border: none;
+      background-color: transparent;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2;
+      transition: color .2s ease
+    }
+    .header-search-button .google-symbols {
+      font-size: 24px;
+      color: var(--on-surface)
+    }
+    .header-search-button:disabled {
+      pointer-events: none;
+      opacity: .5
+    }
+
+    .actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      z-index: 1;
+      --icon-size: 20px
+    }
+
+    theme-switcher {
+      position: relative;
+      display: inline-block;
+      z-index: 1
+    }
+
+    .theme-button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 42px;
+      height: 42px;
+      padding: 0;
+      color: var(--neutral);
+      background: color-mix(in srgb, var(--surface) 99%, var(--neutral));
+      border: 1px solid color-mix(in srgb, var(--surface) 80%, var(--neutral));
+      border-radius: 99px;
+      cursor: pointer;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, .05);
+      transition: color .2s ease;
+      user-select: none
+    }
+    .theme-button .google-symbols { font-size: 24px; line-height: 1 }
+    .theme-button:hover { color: var(--on-surface) }
+
+    /* --- 4. Home Page & Hero Section --- */
+    app-home { flex: 1; display: block; }
+    .home-container { padding-inline: var(--codewiki-applayout-spacing-inline); }
+    
+    .hero-section {
+      text-align: center;
+      max-width: 1200px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 160px 0 0 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 40px
+    }
+    .hero-section h1 {
+      color: var(--on-surface);
+      text-align: center;
+      font-size: clamp(64px, 8vw, 140px);
+      font-weight: 500;
+      letter-spacing: -.04em;
+      line-height: 1;
+      font-family: var(--heading-font-family);
+      white-space: nowrap
+    }
+    .hero-section p {
+      font-size: 24px;
+      line-height: 1.4;
+      letter-spacing: -.01em;
+      text-wrap: balance;
+      background: radial-gradient(circle at center, color-mix(in srgb, var(--on-accent) 60%, var(--on-surface)), color-mix(in srgb, var(--accent) 35%, var(--neutral)));
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-family: var(--text-font-family);
+      max-width: 600px;
+      margin-bottom: 30px
+    }
+
+    .search-container {
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      width: 100%;
+      max-width: 700px;
+      background-color: color-mix(in srgb, var(--accent-surface) 95%, var(--neutral));
+      border-radius: 99px;
+      padding: 1px;
+      transition: background-color .2s ease;
+      box-shadow: 0 34px 84px -30px rgba(0, 0, 0, .149), 0 -80px 100px 60px color-mix(in srgb, var(--accent) 20%, transparent)
+    }
+    .search-container.shine:after,
+    .search-container.shine:before {
+      width: 300px;
+      aspect-ratio: 2/1;
+      transition: width .6s ease
+    }
+    .search-container:focus-within { background-color: var(--accent) }
+    .search-container:focus-within.shine:after,
+    .search-container:focus-within.shine:before { width: 800px }
+    
+    .search-input {
+      flex: 1;
+      padding: 32px 82px 32px 50px;
+      border: none;
+      border-radius: 99px;
+      font-size: 21px;
+      font-family: var(--text-font-family);
+      letter-spacing: -.02em;
+      z-index: 2;
+      background-color: color-mix(in srgb, var(--surface) 92%, transparent);
+      backdrop-filter: blur(34px);
+      transition: background-color .2s ease-in-out;
+      color: var(--on-surface);
+    }
+    .search-input::placeholder { color: var(--neutral); }
+    .search-input::-webkit-input-placeholder { color: var(--neutral); }
+
+    .search-button {
+      position: absolute;
+      right: 38px;
+      top: 0;
+      bottom: 0;
+      padding: 12px;
+      margin: auto 0;
+      height: fit-content;
+      border: none;
+      background-color: transparent;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2;
+      transition: color .2s ease;
+      color: var(--on-surface);
+    }
+    .search-button .google-symbols { font-size: 30px; height: 30px; width: 30px }
+    .search-button:disabled { pointer-events: none }
+
+    .hero-background {
+      position: relative;
+      width: 100%;
+      height: 400px; /* Give it some space to contain the absolutely positioned image */
+    }
+    .hero-background img {
+      position: absolute;
+      left: 50%;
+      top: -150px; /* Adjust position to better fit frame */
+      width: 1352px;
+      height: 838px;
+      transform: translate(-50%);
+      pointer-events: none;
+    }
+    .mobile-hero-image { display: none; }
+    .sticky-hero-cube-section {
+      position: -webkit-sticky;
+      position: sticky;
+      top: 0;
+      width: 100%;
+      height: 640px;
+      margin: 0 auto;
+    }
+    
+    /* --- 5. Featured Repositories Section --- */
+    .featured-section {
+      position: relative;
+      padding: 160px 0;
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      gap: 80px
+    }
+    .featured-section h2 {
+      font-size: clamp(32px, 6vw, 48px);
+      color: var(--on-surface);
+      text-align: center;
+      font-family: var(--heading-font-family);
+      font-weight: 500;
+      letter-spacing: -.04em;
+      line-height: 1.1;
+      margin-bottom: 80px;
+    }
+
+    .repositories-grid {
+      position: relative;
+      width: 100%;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 24px;
+      margin: 0 auto
+    }
+    .repositories-grid:before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at center, var(--surface), transparent);
+      filter: blur(34px)
+    }
+
+    .repo-card {
+      position: relative;
+      overflow: hidden;
+      background-color: color-mix(in srgb, var(--accent-surface) 70%, var(--surface));
+      border-radius: 24px;
+      padding: 1px;
+      text-decoration: none;
+      transition: background-color .2s ease;
+      box-shadow: 0 34px 84px -30px color-mix(in srgb, var(--accent) 25%, transparent)
+    }
+    .repo-card.shine:after, .repo-card.shine:before {
+      width: 250px; aspect-ratio: 2/1; z-index: 0; opacity: 0
+    }
+    .repo-card:hover { background-color: color-mix(in srgb, var(--accent) 40%, var(--surface)) }
+    .repo-card:hover .repo-content { background: color-mix(in srgb, var(--surface) 75%, transparent) }
+    .repo-card:hover.shine:before { opacity: 1 }
+    .repo-card:hover.shine:after { opacity: .4 }
+
+    .repo-card .repo-content {
+      position: relative;
+      z-index: 1;
+      color: var(--neutral);
+      background: color-mix(in srgb, var(--surface) 85%, transparent);
+      border-radius: 23px;
+      padding: 32px;
+      backdrop-filter: blur(60px);
+      box-shadow: 0 34px 84px -30px rgba(66, 133, 244, .09);
+      line-height: 1.45;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      height: 100%;
+      min-height: 236px;
+      transition: background-color .2s ease
+    }
+    .repo-card .repo-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between
+    }
+    .repo-card h3 {
+      font-size: 24px;
+      color: var(--on-surface);
+      margin: 0;
+      font-family: var(--heading-font-family);
+      font-weight: 500;
+      flex: 1
+    }
+    .repo-card .repo-avatar {
+      width: 24px; height: 24px; object-fit: cover; flex-shrink: 0; user-select: none
+    }
+    .repo-card .repo-description {
+      font-size: 16px;
+      font-family: var(--text-font-family);
+      margin: 0
+    }
+    .star-count {
+      margin-top: auto;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 14px;
+      font-family: var(--text-font-family);
+      color: var(--neutral);
+    }
+    .star-count .google-symbols { font-size: 14px; height: 14px; width: 14px; }
+    
+    /* --- 6. Sticky Scroll Section --- */
+    .sticky-section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .sticky-section .sticky-section-content {
+      position: relative;
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: start;
+      gap: 40px
+    }
+    .sticky-section .sticky-section-content .split-sections { display: flex; flex-direction: column; }
+    .sticky-section .sticky-section-content .sticky-visual {
+      pointer-events: none;
+      position: -webkit-sticky;
+      position: sticky;
+      top: calc(50dvh - 300px);
+      isolation: isolate;
+      display: flex;
+      align-items: center
+    }
+    .sticky-section .sticky-section-content .sticky-visual .scroll-animation-container {
+      position: relative; width: 100%; height: 600px; z-index: 1; overflow: hidden
+    }
+    .sticky-section .sticky-section-content .sticky-visual .scroll-animation-container .layer {
+      width: 100%;
+      opacity: 1;
+    }
+    .sticky-section .sticky-section-content .sticky-visual .scroll-animation-container .overlay-image {
+      object-fit: contain; width: 100%; height: 100%;
+    }
+    .sticky-section .sticky-section-content .sticky-visual .cube {
+      position: absolute; inset: 0; z-index: 2; height: 600px;
+    }
+    app-split-section { display: block; }
+    .split-section { padding: 160px 0 }
+    .split-section h2 {
+      font-family: var(--heading-font-family);
+      font-weight: 500;
+      font-size: clamp(32px, 6vw, 48px);
+      letter-spacing: -.04em;
+      line-height: 1.1;
+      text-wrap: balance
+    }
+    .split-section h2 .tag {
+      position: relative; overflow: hidden; display: inline-block; border-radius: 20px;
+      padding: 1px; margin-left: 8px; z-index: 1; white-space: nowrap;
+      vertical-align: middle; background-color: color-mix(in srgb, var(--accent-surface) 90%, var(--accent))
+    }
+    .split-section h2 .tag.shine:after, .split-section h2 .tag.shine:before { width: 75px; aspect-ratio: 2/1; z-index: 0 }
+    .split-section h2 .tag .tag-content {
+      position: relative; z-index: 1; border-radius: 19px; padding: 6px 16px; font-family: var(--text-font-family);
+      font-size: 16px; font-weight: 400; letter-spacing: -.02em; line-height: 1.25; color: var(--on-accent);
+      background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 10%, var(--accent-surface)), var(--surface));
+      display: flex; align-items: center; height: 100%
+    }
+    .split-section p {
+      margin-top: 40px; font-family: var(--text-font-family); color: var(--neutral);
+      font-size: 20px; line-height: 1.4; letter-spacing: -.01em; text-wrap: balance
+    }
+    .split-section .cta-card {
+      position: relative; overflow: hidden; background-color: var(--on-surface); border-radius: 24px;
+      padding: 1px; box-shadow: 0 34px 84px -30px color-mix(in srgb, var(--accent) 30%, transparent);
+      margin-top: 60px; text-decoration: none; transition: background-color .2s ease; max-width: 460px; display: block
+    }
+    .split-section .cta-card.shine:after, .split-section .cta-card.shine:before { width: 300px; aspect-ratio: 2/1; z-index: 0 }
+    .split-section .cta-card:hover .cta-title:after { color: var(--on-surface) }
+    .split-section .cta-card .cta-content {
+      position: relative; margin: 1px; z-index: 1; background: var(--surface); border-radius: 23px;
+      backdrop-filter: blur(60px); padding: 32px 40px; box-shadow: 0 34px 84px -30px rgba(66, 133, 244, .09);
+      line-height: 1.45; display: flex; flex-direction: column; gap: 24px; height: 100%
+    }
+    .split-section .cta-title {
+      font-family: var(--heading-font-family); font-weight: 500; color: var(--on-surface); width: 100%;
+      display: flex; align-items: center; gap: 12px; font-size: 24px; letter-spacing: -.04em;
+      line-height: 1.4; text-wrap: balance
+    }
+    .split-section .cta-title:after {
+      color: var(--neutral); margin-left: auto; content: "arrow_outward"; font-family: Google Symbols; font-size: 24px;
+      height: 32px; width: 32px; border-radius: 8px; background: color-mix(in srgb, currentColor 10%, transparent);
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: color .2s ease
+    }
+    .split-section .icon-grid {
+      margin-top: 60px; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 40px 16px; padding-left: 0; list-style: none
+    }
+    .split-section .icon-grid li {
+      font-family: var(--heading-font-family); font-weight: 500; font-size: 20px; line-height: 1.1; letter-spacing: -.01em;
+      display: flex; flex-direction: column; gap: 24px; border-radius: 20px; text-decoration: none;
+      text-wrap: balance; color: var(--on-surface);
+    }
+    .split-section .icon-grid li:not(.media-card) span { max-width: 220px }
+    .split-section .icon-grid li:before {
+      color: var(--on-accent); font-family: Google Symbols; font-size: 24px;
+      display: flex; align-items: center; justify-content: center;
+      background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 20%, transparent), transparent 50%);
+      border: 1px solid var(--accent-surface); border-radius: 12px; aspect-ratio: 1/1;
+      width: 62px; height: 62px; content: var(--icon); font-weight: 400; flex-shrink: 0
+    }
+    .split-section .icon-grid li p { font-size: 14px; margin: auto 0 0 0; font-weight: 400 }
+    .split-section .icon-list {
+      margin-top: 60px; padding-left: 0; list-style: none; display: flex; flex-direction: column; gap: 12px
+    }
+    .split-section .icon-list li {
+      font-family: var(--text-font-family); color: var(--on-surface); font-size: 20px;
+      line-height: 1.4; letter-spacing: -.01em; position: relative; display: flex;
+      align-items: center; gap: 24px
+    }
+    .split-section .icon-list li:before {
+      color: var(--on-accent); font-family: Google Symbols; font-size: 24px;
+      display: flex; align-items: center; justify-content: center;
+      background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 20%, transparent), transparent 50%);
+      border: 1px solid var(--accent-surface); border-radius: 12px; aspect-ratio: 1/1;
+      width: 62px; height: 62px; content: var(--icon)
+    }
+    .split-section .mobile-image { display: none; margin-top: 24px }
+    .split-section .mobile-image img { width: 100%; height: auto; display: block }
+
+    /* --- 7. Browser Section --- */
+    .browser-section {
+      position: relative; display: flex; flex-direction: column; align-items: center;
+      text-align: center; overflow: hidden;
+    }
+    .browser-section .browser-section-content { width: 100%; max-width: 1200px; margin: 0 auto }
+    .browser-section .browser-section-content h2 {
+      font-size: clamp(32px, 6vw, 48px); font-family: var(--heading-font-family); font-weight: 500;
+      line-height: 1.1; letter-spacing: -.04em; text-wrap: balance; text-align: center
+    }
+    .browser-section .browser-section-content p {
+      font-size: 20px; line-height: 1.4; letter-spacing: -.01em; color: var(--neutral);
+      max-width: 500px; margin: 40px auto 0 auto
+    }
+    .browser-section .browser-section-content .desktop-graphic {
+      margin-top: 80px; width: 100%; height: 100%; display: flex;
+      flex-direction: column; justify-content: center
+    }
+    .browser-section .browser-section-content .desktop-graphic .screen {
+      position: relative; width: 100%; height: 100%; aspect-ratio: 7/4;
+      background-color: color-mix(in srgb, var(--surface) 90%, var(--neutral));
+      padding: 1px; border-radius: max(6px, .75vw); overflow: hidden
+    }
+    .browser-section .browser-section-content .desktop-graphic .screen.shine:after,
+    .browser-section .browser-section-content .desktop-graphic .screen.shine:before {
+      width: 30vw; aspect-ratio: 2/1; z-index: 0; filter: blur(50px)
+    }
+    .browser-section .browser-section-content .desktop-graphic .screen .screen-content {
+      position: relative; width: 100%; height: 100%;
+      background-color: color-mix(in srgb, var(--surface) 90%, var(--surface));
+      border-radius: max(6px, .75vw - 1px); z-index: 2
+    }
+    .browser-section .browser-section-content .desktop-graphic .screen .screen-content .browser-section-cta {
+      overflow: hidden; z-index: 20; background: linear-gradient(to right, #c797ff, var(--accent));
+      border-radius: 100px; padding: 1px; transition: all .2s ease; position: absolute;
+      bottom: 8%; left: 50%; transform: translateX(-50%); text-decoration: none
+    }
+    .browser-section .browser-section-content .desktop-graphic .screen .screen-content .browser-section-cta:hover {
+      background: linear-gradient(to right, #b886ff, var(--accent) 30%);
+      transform: translateX(-50%)
+    }
+    .browser-section .browser-section-content .desktop-graphic .screen .screen-content .browser-section-cta:hover .browser-section-cta-content { background: color-mix(in srgb, var(--surface) 95%, transparent) }
+    .browser-section .browser-section-content .desktop-graphic .screen .screen-content .browser-section-cta:hover .arrow {
+      color: var(--on-surface); background: color-mix(in srgb, currentColor 15%, transparent)
+    }
+    .browser-section .browser-section-content .desktop-graphic .screen .screen-content .browser-section-cta-content {
+      position: relative; z-index: 1; background: color-mix(in srgb, var(--surface) 95%, transparent);
+      border-radius: 99px; backdrop-filter: blur(6px); padding: 15px 34px;
+      display: flex; height: 100%; align-items: center; width: fit-content; gap: 30px; transition: background-color .2s ease
+    }
+    .browser-section .browser-section-content .desktop-graphic .screen .screen-content .browser-section-cta-content svg {
+      height: 38px; width: 38px; flex-shrink: 0
+    }
+    .browser-section .browser-section-content .desktop-graphic .screen .screen-content .browser-section-cta-content p {
+      margin: 0; color: var(--on-surface); font-size: 24px; font-weight: 500; letter-spacing: -.04em; white-space: nowrap
+    }
+    .browser-section .browser-section-content .desktop-graphic .screen .screen-content .browser-section-cta-content .arrow {
+      color: var(--neutral); margin-left: auto; font-size: 24px; height: 32px; width: 32px;
+      border-radius: 8px; background: color-mix(in srgb, currentColor 10%, transparent);
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all .2s ease
+    }
+    .browser-section .browser-section-content .desktop-graphic .screen .browser-bar {
+      position: relative; width: 100%; height: 8%; background: color-mix(in srgb, var(--on-accent) 6%, transparent);
+      display: flex; align-items: center; padding: 0 1.5%;
+      border-top-left-radius: max(6px, .75vw - 1px);
+      border-top-right-radius: max(6px, .75vw - 1px)
+    }
+    .browser-section .browser-section-content .desktop-graphic .screen .browser-bar .browser-dots {
+      display: flex; gap: 12%; flex-shrink: 0; width: 5%
+    }
+    .browser-section .browser-section-content .desktop-graphic .screen .browser-bar .browser-dots .dot {
+      width: 20%; height: 0; padding-bottom: 20%; border-radius: 50%
+    }
+    .browser-section .browser-section-content .desktop-graphic .screen .browser-bar .browser-dots .dot:first-child { background-color: #ff4f4f }
+    .browser-section .browser-section-content .desktop-graphic .screen .browser-bar .browser-dots .dot:nth-child(2) { background-color: color-mix(in srgb, var(--neutral) 20%, hsla(0, 0%, 100%, .314)) }
+    .browser-section .browser-section-content .desktop-graphic .screen .browser-bar .browser-dots .dot:last-child { background-color: #37e64e }
+    .browser-section .browser-section-content .desktop-graphic .screen .browser-bar .address-bar {
+      position: absolute; top: 20%; bottom: 20%; left: 50%; transform: translateX(-50%);
+      flex: 1; background: color-mix(in srgb, var(--on-accent) 7%, transparent);
+      border-radius: 24px; max-width: 40%; aspect-ratio: 20/1
+    }
+    .browser-section .browser-section-content .desktop-graphic .screen .cube {
+      position: absolute; top: 0; width: 100%; height: 92%;
+    }
+    .browser-section .browser-section-content .desktop-graphic .base {
+      position: relative; width: 15%; height: 100%; aspect-ratio: 3/2;
+      margin: 0 auto 14px auto;
+      background: linear-gradient(to bottom, color-mix(in srgb, var(--surface) 88%, var(--on-accent)), rgba(215, 107, 24, .063))
+    }
+    .browser-section .browser-section-content .desktop-graphic .base:before {
+      content: ""; position: absolute; bottom: -12%; left: -10%; height: 12%; width: 120%;
+      aspect-ratio: 50/3; border-top-left-radius: 4px; border-top-right-radius: 4px;
+      background: linear-gradient(to right, rgba(215, 107, 24, .082), color-mix(in srgb, var(--surface) 88%, var(--on-accent)), rgba(215, 107, 24, .082))
+    }
+    .browser-section .browser-section-content:after,
+    .browser-section .browser-section-content:before {
+      content: ""; position: absolute; bottom: -50%; width: 100%; height: 100%;
+      background: radial-gradient(circle at center, color-mix(in srgb, var(--accent) 30%, transparent) 0, transparent 38%);
+      z-index: 3; pointer-events: none
+    }
+    .browser-section .browser-section-content:before { left: -18% }
+    .browser-section .browser-section-content:after { right: -18% }
+
+    /* --- 8. Footer Component --- */
+    app-footer { display: block; padding-inline: var(--codewiki-applayout-spacing-inline) }
+    .footer-content {
+      margin: 0 auto; padding: 64px 0; display: flex; align-items: start;
+      justify-content: space-between; gap: 16px
+    }
+    .footer-content.centered { width: 100%; max-width: 1200px }
+    .footer-content a {
+      font-size: 14px; font-weight: 500; color: var(--neutral);
+      text-decoration: none; transition: color .2s ease
+    }
+    .footer-content a:hover { color: var(--on-surface) }
+    .footer-content .google-for-dev {
+      font-size: 14px; font-weight: 500; color: var(--neutral); opacity: .6;
+      margin-right: auto; display: flex; align-items: center; gap: 3px
+    }
+    canvas { display: block; pointer-events: none; width: 100%; height: 100%; }
+
+    /* --- 9. Mobile & Responsive Styles --- */
+    @media (max-width:1023px) {
+      .sticky-hero-cube-section { display: none }
+    }
+    @media (max-width:768px) {
+      .header-content { padding: 14px 0 }
+      .app-title img { width: 108px; margin-right: 12px }
+      .header-search { margin-left: auto }
+      .header-search-input { font-size: 16px; line-height: 18px; padding: 12px 40px 12px 20px }
+      .header-search-button { right: 12px }
+      .header-search-button .google-symbols { font-size: 18px }
+      .theme-button { margin-left: 0; }
+
+      .hero-section { padding: 80px 0 60px 0 }
+      .hero-section p { font-size: 16px; margin-bottom: 10px }
+      .search-container { max-width: 450px }
+      .search-input { font-size: 19px; padding: 18px 60px 18px 32px }
+      .search-button { right: 24px }
+      .search-button .google-symbols { font-size: 24px }
+      .hero-background { display: none; }
+      .mobile-hero-image { display: block; margin-top: 40px; width: 100%; }
+      
+      .featured-section { gap: 32px; padding: 80px 0 }
+      .featured-section h2 { margin-bottom: 24px; }
+      .featured-section p { font-size: 16px }
+      .repositories-grid { grid-template-columns: 1fr; gap: 16px }
+      
+      .repo-card .repo-content { padding: 24px; gap: 16px }
+      .repo-card .repo-content .repo-header { flex-direction: column-reverse; align-items: flex-start; gap: 12px }
+      .repo-card .repo-content h3 { font-size: 20px }
+      .repo-card .repo-content .repo-description { font-size: 14px }
+      
+      .sticky-section .sticky-section-content { grid-template-columns: 1fr }
+      .sticky-section .sticky-section-content .sticky-visual { display: none }
+      .split-section { padding: 40px 0 }
+      .split-section p { font-size: 16px }
+      .split-section .icon-grid li:not(.media-card) { padding: 0 16px }
+      .split-section .icon-grid li:not(.media-card) p { max-width: 300px }
+      .split-section .icon-list li { font-size: 16px }
+      .split-section .mobile-image { display: block; width: 100%; margin-top: 40px; }
+      
+      .browser-section { padding-top: 80px }
+      .browser-section .browser-section-content p { font-size: 16px }
+      .browser-section .browser-section-content .desktop-graphic .screen .screen-content .browser-section-cta {
+          background: linear-gradient(to right, #c797ff, transparent, var(--accent));
+          bottom: 50%; transform: translate(-50%, 50%)
+      }
+      .browser-section .browser-section-content .desktop-graphic .screen .screen-content .browser-section-cta:hover { transform: translate(-50%, 50%) }
+      .browser-section .browser-section-content .desktop-graphic .screen .screen-content .browser-section-cta-content {
+          background: color-mix(in srgb, var(--surface) 70%, transparent); gap: 14px; padding: 12px 18px
+      }
+      .browser-section .browser-section-content .desktop-graphic .screen .screen-content .browser-section-cta-content svg {
+          height: 26px; width: 26px
+      }
+      .browser-section .browser-section-content .desktop-graphic .screen .screen-content .browser-section-cta-content p { font-size: 20px }
+      .browser-section .browser-section-content .desktop-graphic .screen .screen-content .browser-section-cta-content .arrow {
+          font-size: 20px; height: 26px; width: 26px
+      }
+      .browser-section .browser-section-content .desktop-graphic .screen .cube { top: 4%; height: 100% }
+    }
+  </style>
+</head>
+
+<body class="dark-theme">
+  <sdlc-agents-root>
+    <landing-page>
+      <app-bar>
+        <header class="header-content small-width">
+          <a aria-label="Home" class="app-title" href="https://codewiki.google/">
+            <img data-test-id="product-logo" class="logo" alt="Code Wiki logo" src="https://www.gstatic.com/_/boq-sdlc-agents-ui/_/r/JA1YkbZh5pk.svg">
+          </a>
+          <div class="header-search shine">
+            <input type="text" autocomplete="off" class="header-search-input" placeholder="Find open source repos" tabindex="-1">
+            <button class="header-search-button" disabled="" tabindex="-1">
+                <span class="google-symbols">search</span>
+            </button>
+          </div>
+          <div class="actions">
+              <theme-switcher>
+                <div class="theme-switcher">
+                  <button data-test-id="theme-button" aria-label="Toggle theme" class="theme-button">
+                    <span class="google-symbols">light_mode</span>
+                  </button>
+                </div>
+              </theme-switcher>
+          </div>
+        </header>
+      </app-bar>
+      <div class="app-main">
+        <app-home>
+          <div class="home-container">
+            <section class="hero-section">
+              <h1>Code Wiki</h1>
+              <p> A new perspective on development for the agentic era. Gemini-generated documentation, always up-to-date. </p>
+              <div class="search-container shine">
+                <input type="text" autocomplete="off" class="search-input" placeholder="Find open source repos">
+                <button class="search-button" disabled="">
+                    <span class="google-symbols">search</span>
+                </button>
+              </div>
+              <div class="hero-background">
+                <img width="1352" height="838" alt="" src="https://codewiki.google/assets/hero-bg-dark.png" data-theme-img="dark">
+                <img width="1352" height="838" alt="" src="https://codewiki.google/assets/hero-bg-light.png" data-theme-img="light" style="display: none;">
+              </div>
+              <img alt="Theme-based image" class="mobile-hero-image" src="https://codewiki.google/assets/mobile-hero-dark.png" data-theme-img="dark">
+              <img alt="Theme-based image" class="mobile-hero-image" src="https://codewiki.google/assets/mobile-hero-light.png" data-theme-img="light" style="display: none;">
+            </section>
+            <section class="sticky-hero-cube-section"></section>
+
+            <section class="featured-section">
+              <h2>Featured Repositories</h2>
+              <div class="repositories-grid">
+                <a class="repo-card shine" href="https://codewiki.google/github.com/google-gemini/gemini-cli">
+                  <div class="repo-content">
+                    <div class="repo-header">
+                      <h3>gemini-cli</h3><img width="100" height="100" class="repo-avatar" src="https://codewiki.google/assets/avatars/google-gemini.png" alt="google-gemini">
+                    </div>
+                    <p class="repo-description">An open-source AI agent that brings the power of Gemini directly into your terminal.</p>
+                    <span class="star-count"><span class="google-symbols">star</span> 81.5k </span>
+                  </div>
+                </a>
+                <a class="repo-card shine" href="https://codewiki.google/github.com/golang/go">
+                  <div class="repo-content">
+                    <div class="repo-header">
+                      <h3>go</h3><img width="100" height="100" class="repo-avatar" src="https://codewiki.google/assets/avatars/golang.png" alt="golang">
+                    </div>
+                    <p class="repo-description">The Go programming language</p>
+                    <span class="star-count"><span class="google-symbols">star</span> 130.7k </span>
+                  </div>
+                </a>
+                <a class="repo-card shine" href="https://codewiki.google/github.com/flutter/flutter">
+                  <div class="repo-content">
+                    <div class="repo-header">
+                      <h3>flutter</h3><img width="100" height="100" class="repo-avatar" src="https://codewiki.google/assets/avatars/flutter.png" alt="flutter">
+                    </div>
+                    <p class="repo-description">Flutter makes it easy and fast to build beautiful apps for mobile and beyond</p>
+                    <span class="star-count"><span class="google-symbols">star</span> 173.7k </span>
+                  </div>
+                </a>
+                <a class="repo-card shine" href="https://codewiki.google/github.com/kubernetes/kubernetes">
+                  <div class="repo-content">
+                    <div class="repo-header">
+                      <h3>kubernetes</h3><img width="100" height="100" class="repo-avatar" src="https://codewiki.google/assets/avatars/kubernetes.png" alt="kubernetes">
+                    </div>
+                    <p class="repo-description">Production-Grade Container Scheduling and Management</p>
+                    <span class="star-count"><span class="google-symbols">star</span> 118.4k </span>
+                  </div>
+                </a>
+                <a class="repo-card shine" href="https://codewiki.google/github.com/facebook/react">
+                  <div class="repo-content">
+                    <div class="repo-header">
+                      <h3>react</h3><img width="100" height="100" class="repo-avatar" src="https://codewiki.google/assets/avatars/facebook.png" alt="facebook">
+                    </div>
+                    <p class="repo-description">The library for web and native user interfaces.</p>
+                    <span class="star-count"><span class="google-symbols">star</span> 240.3k </span>
+                  </div>
+                </a>
+                <a class="repo-card shine" href="https://codewiki.google/github.com/modelcontextprotocol/python-sdk">
+                  <div class="repo-content">
+                    <div class="repo-header">
+                      <h3>python-sdk</h3><img width="100" height="100" class="repo-avatar" src="https://codewiki.google/assets/avatars/modelcontextprotocol.png" alt="modelcontextprotocol">
+                    </div>
+                    <p class="repo-description">The official Python SDK for Model Context Protocol servers and clients</p>
+                    <span class="star-count"><span class="google-symbols">star</span> 19.8k </span>
+                  </div>
+                </a>
+              </div>
+            </section>
+            <section class="sticky-section">
+                <div class="sticky-section-content">
+                    <div class="split-sections">
+                        <app-split-section>
+                            <section class="split-section">
+                                <h2> Try it with your own private repository <span class="tag shine"><span class="tag-content">Coming Soon</span></span></h2>
+                                <p>Stop documenting. Start understanding. Connect your repository and get a fully interactive Code Wiki that stays perfectly in sync with every change. No more stale docs. Ever.</p>
+                                <a target="_blank" class="cta-card invert-theme shine" href="https://developers.google.com/profile/badges/community/sdlcagents/gca-agents">
+                                    <div class="cta-content">
+                                        <h3 class="cta-title"><svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M32 16.032C27.8484 16.2868 23.9332 18.0509 20.9921 20.9921C18.0509 23.9332 16.2868 27.8484 16.032 32H15.968C15.7136 27.8482 13.9497 23.9328 11.0084 20.9916C8.06716 18.0504 4.15176 16.2864 0 16.032V15.968C4.15176 15.7136 8.06716 13.9497 11.0084 11.0084C13.9497 8.06716 15.7136 4.15176 15.968 0H16.032C16.2868 4.15162 18.0509 8.06677 20.9921 11.0079C23.9332 13.9491 27.8484 15.7132 32 15.968V16.032Z" fill="url(#paint0_radial_6147_7876)"></path><defs><radialgradient id="paint0_radial_6147_7876" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(3.176 13.006) rotate(18.6832) scale(34.06 272.842)"><stop offset="0.067" stop-color="#9168C0"></stop><stop offset="0.343" stop-color="#5684D1"></stop><stop offset="0.672" stop-color="#1BA1E3"></stop></radialgradient></defs></svg> Notify me when available </h3>
+                                    </div>
+                                </a>
+                                <img alt="" loading="lazy" decoding="async" class="mobile-image" src="https://codewiki.google/assets/animations/home/private-repo-dark.png" data-theme-img="dark">
+                                <img alt="" loading="lazy" decoding="async" class="mobile-image" src="https://codewiki.google/assets/animations/home/private-repo-light.png" data-theme-img="light" style="display: none;">
+                            </section>
+                        </app-split-section>
+                        <app-split-section>
+                            <section class="split-section">
+                                <h2> Read your app for the first time </h2>
+                                <p>Code documentation that works for you, not the other way around.</p>
+                                <ul class="icon-grid">
+                                    <li style="--icon: 'grid_view';"><span>Understand your code section by section</span><p>Focus on the code you care about. Pick a section and dive deeper to see exactly how it works.</p></li>
+                                    <li style="--icon: 'bolt';"><span>Generated automatically</span><p>Our AI agent automatically generates and maintains a rich, interactive knowledge base from your code.</p></li>
+                                    <li style="--icon: 'rotate_left';"><span>Always up-to-date</span><p>Every time a pull request is merged, the relevant documentation is automatically updated.</p></li>
+                                    <li style="--icon: 'code';"><span>Linked back to your code</span><p>Instantly jump from an architectural overview to the exact service, or from a function's description to its definition in the repository.</p></li>
+                                </ul>
+                                <img alt="" loading="lazy" decoding="async" class="mobile-image" src="https://codewiki.google/assets/animations/home/read-app-dark.png" data-theme-img="dark">
+                                <img alt="" loading="lazy" decoding="async" class="mobile-image" src="https://codewiki.google/assets/animations/home/read-app-light.png" data-theme-img="light" style="display: none;">
+                            </section>
+                        </app-split-section>
+                        <app-split-section>
+                            <section class="split-section">
+                                <h2> Talk to your codebase </h2>
+                                <p>Ask questions about your architecture, find function definitions, and understand complex logic in natural language. It's like having an engineer on call, 24/7.</p>
+                                <ul class="icon-list">
+                                    <li style="--icon: 'chat_bubble_outline';"> Chat with your codebase </li>
+                                    <li style="--icon: 'search';"> Find what you need instantly </li>
+                                    <li style="--icon: 'speed';"> Low latency, high-quality </li>
+                                </ul>
+                                <img alt="" loading="lazy" decoding="async" class="mobile-image" src="https://codewiki.google/assets/animations/home/talk-codebase-dark.png" data-theme-img="dark">
+                                <img alt="" loading="lazy" decoding="async" class="mobile-image" src="https://codewiki.google/assets/animations/home/talk-codebase-light.png" data-theme-img="light" style="display: none;">
+                            </section>
+                        </app-split-section>
+                    </div>
+                    <div class="sticky-visual">
+                        <div class="cube"></div>
+                        <div class="scroll-animation-container">
+                            <div class="layer" data-layer-index="0">
+                                <img src="https://codewiki.google/assets/animations/home/private-repo-dark.png" alt="Private repo visual" class="overlay-image" data-theme-img="dark">
+                                <img src="https://codewiki.google/assets/animations/home/private-repo-light.png" alt="Private repo visual" class="overlay-image" data-theme-img="light" style="display: none;">
+                            </div>
+                            <div class="layer" data-layer-index="1">
+                                <img src="https://codewiki.google/assets/animations/home/read-app-dark.png" alt="Read app visual" class="overlay-image" data-theme-img="dark">
+                                 <img src="https://codewiki.google/assets/animations/home/read-app-light.png" alt="Read app visual" class="overlay-image" data-theme-img="light" style="display: none;">
+                            </div>
+                            <div class="layer" data-layer-index="2">
+                               <img src="https://codewiki.google/assets/animations/home/talk-codebase-dark.png" alt="Talk to codebase visual" class="overlay-image" data-theme-img="dark">
+                               <img src="https://codewiki.google/assets/animations/home/talk-codebase-light.png" alt="Talk to codebase visual" class="overlay-image" data-theme-img="light" style="display: none;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section class="browser-section">
+                <div class="browser-section-content">
+                    <h2>Add the missing dimensions to your software</h2>
+                    <div class="desktop-graphic">
+                        <div class="screen shine">
+                            <div class="screen-content">
+                                <a href="https://codewiki.google/github.com/google-gemini/gemini-cli" target="_blank" class="browser-section-cta">
+                                    <div class="browser-section-cta-content">
+                                        <svg width="57" height="57" viewBox="0 0 57 57" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M56.5586 28.3358C49.2208 28.7861 42.301 31.9041 37.1026 37.1025C31.9042 42.3009 28.7861 49.2208 28.3358 56.5586H28.2227C27.7731 49.2205 24.6554 42.3002 19.4569 37.1017C14.2583 31.9032 7.33806 28.7854 0 28.3358V28.2227C7.33806 27.7731 14.2583 24.6554 19.4569 19.4568C24.6554 14.2583 27.7731 7.33806 28.2227 0H28.3358C28.7861 7.3378 31.9042 14.2576 37.1026 19.456C42.301 24.6544 49.2208 27.7724 56.5586 28.2227V28.3358Z" fill="url(#paint0_radial_6298_8102)"></path><defs><radialgradient id="paint0_radial_6298_8102" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(5.61344 22.9875) rotate(18.6832) scale(60.1996 482.236)"><stop offset="0.067" stop-color="#9168C0"></stop><stop offset="0.343" stop-color="#5684D1"></stop><stop offset="0.672" stop-color="#1BA1E3"></stop></radialgradient></defs></svg>
+                                        <p>See Code Wiki in action</p>
+                                        <span class="google-symbols arrow">arrow_outward</span>
+                                    </div>
+                                </a>
+                                <div class="cube"></div>
+                                <div class="browser-bar">
+                                    <div class="browser-dots">
+                                        <div class="dot"></div>
+                                        <div class="dot"></div>
+                                        <div class="dot"></div>
+                                    </div>
+                                    <div class="address-bar"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="base"></div>
+                    </div>
+                </div>
+            </section>
+          </div>
+        </app-home>
+      </div>
+      <app-footer>
+        <footer class="footer-content centered">
+          <div aria-label="Google for developers logo" class="google-for-dev"><svg width="65" height="22" viewBox="0 0 65 22" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M27.3262 10.9769C27.3262 13.9481 24.9677 16.1374 22.0732 16.1374C19.1788 16.1374 16.8203 13.9481 16.8203 10.9769C16.8203 7.98485 19.1788 5.81641 22.0732 5.81641C24.9677 5.81641 27.3262 7.98485 27.3262 10.9769ZM25.0267 10.9769C25.0267 9.12026 23.6598 7.8499 22.0732 7.8499C20.4867 7.8499 19.1198 9.12026 19.1198 10.9769C19.1198 12.815 20.4867 14.1039 22.0732 14.1039C23.6598 14.1039 25.0267 12.8127 25.0267 10.9769Z" fill="currentColor"></path><path d="M38.6621 10.9769C38.6621 13.9481 36.3036 16.1374 33.4092 16.1374C30.5148 16.1374 28.1562 13.9481 28.1562 10.9769C28.1562 7.98717 30.5148 5.81641 33.4092 5.81641C36.3036 5.81641 38.6621 7.98485 38.6621 10.9769ZM36.3626 10.9769C36.3626 9.12026 34.9957 7.8499 33.4092 7.8499C31.8227 7.8499 30.4557 9.12026 30.4557 10.9769C30.4557 12.815 31.8227 14.1039 33.4092 14.1039C34.9957 14.1039 36.3626 12.8127 36.3626 10.9769Z" fill="currentColor"></path><path d="M49.5228 6.12818V15.3929C49.5228 19.204 47.2422 20.7605 44.5461 20.7605C42.0081 20.7605 40.4807 19.0876 39.9046 17.7196L41.9066 16.8983C42.2631 17.7382 43.1366 18.7293 44.5437 18.7293C46.2695 18.7293 47.339 17.68 47.339 15.7047V14.9625H47.2587C46.7441 15.5884 45.7525 16.1351 44.5012 16.1351C41.883 16.1351 39.4844 13.8876 39.4844 10.9955C39.4844 8.08257 41.883 5.81641 44.5012 5.81641C45.7501 5.81641 46.7417 6.36317 47.2587 6.97043H47.339V6.1305H49.5228V6.12818ZM47.5019 10.9955C47.5019 9.17842 46.2719 7.8499 44.7066 7.8499C43.1201 7.8499 41.7909 9.17842 41.7909 10.9955C41.7909 12.794 43.1201 14.104 44.7066 14.104C46.2719 14.104 47.5019 12.794 47.5019 10.9955Z" fill="currentColor"></path><path d="M53.1178 0.697266V15.8205H50.875V0.697266H53.1178Z" fill="currentColor"></path><path d="M61.8603 12.6758L63.6451 13.8484C63.069 14.6883 61.6809 16.1355 59.2822 16.1355C56.3075 16.1355 54.0859 13.8693 54.0859 10.975C54.0859 7.90612 56.3264 5.81445 59.0249 5.81445C61.7422 5.81445 63.0714 7.94567 63.5058 9.09736L63.7443 9.68368L56.7443 12.5408C57.2802 13.5762 58.1136 14.1043 59.2822 14.1043C60.4532 14.1043 61.2653 13.5366 61.8603 12.6758ZM56.3665 10.8191L61.0458 8.90425C60.7885 8.25977 60.0141 7.81072 59.1028 7.81072C57.9342 7.81072 56.3075 8.82747 56.3665 10.8191Z" fill="currentColor"></path><path d="M8.33246 9.63275V7.44337H15.8188C15.892 7.82494 15.9297 8.27631 15.9297 8.7649C15.9297 10.4075 15.4741 12.4387 14.0056 13.8859C12.5773 15.3517 10.7523 16.1334 8.33482 16.1334C3.85389 16.1334 0.0859375 12.5364 0.0859375 8.12042C0.0859375 3.70443 3.85389 0.107422 8.33482 0.107422C10.8137 0.107422 12.5797 1.066 13.9065 2.31542L12.3389 3.86032C11.3874 2.98084 10.0984 2.2968 8.33246 2.2968C5.06029 2.2968 2.50111 4.89568 2.50111 8.12042C2.50111 11.3452 5.06029 13.944 8.33246 13.944C10.4549 13.944 11.6636 13.1041 12.438 12.341C13.066 11.7221 13.4792 10.838 13.6421 9.63042L8.33246 9.63275Z" fill="currentColor"></path></svg><svg xmlns="http://www.w3.org/2000/svg" width="123" height="18" viewBox="0 0 123 18" fill="none"><path d="M119.244 14.0502C118.24 14.0502 117.388 13.8008 116.689 13.302C115.99 12.8032 115.501 12.1859 115.221 11.4502L116.651 10.8329C116.905 11.419 117.261 11.8679 117.719 12.1797C118.189 12.4914 118.698 12.6473 119.244 12.6473C119.854 12.6473 120.356 12.5164 120.75 12.2545C121.157 11.9926 121.36 11.6746 121.36 11.3005C121.36 10.9389 121.208 10.6396 120.903 10.4027C120.611 10.1657 120.102 9.95997 119.378 9.78539L118.081 9.4674C117.369 9.30529 116.759 9.01224 116.251 8.58826C115.755 8.16427 115.507 7.60312 115.507 6.90479C115.507 6.33116 115.672 5.83859 116.003 5.42708C116.346 5.01556 116.797 4.70381 117.357 4.49182C117.916 4.27982 118.526 4.17383 119.187 4.17383C120 4.17383 120.738 4.36088 121.399 4.73498C122.072 5.09662 122.549 5.61413 122.829 6.28752L121.399 6.88608C121.195 6.43716 120.884 6.1067 120.464 5.89471C120.058 5.68272 119.6 5.57672 119.092 5.57672C118.596 5.57672 118.145 5.69519 117.738 5.93212C117.344 6.16905 117.147 6.47457 117.147 6.84867C117.147 7.1729 117.274 7.42854 117.528 7.61559C117.795 7.80264 118.215 7.97099 118.787 8.12063L120.197 8.45732C121.138 8.69425 121.837 9.04965 122.295 9.52352C122.765 9.98491 123 10.5398 123 11.1883C123 11.7245 122.841 12.2108 122.524 12.6473C122.206 13.0837 121.761 13.4267 121.189 13.6761C120.617 13.9255 119.969 14.0502 119.244 14.0502Z" fill="currentColor"></path><path d="M109.297 4.47296H110.842V5.98808H110.918C111.096 5.47681 111.458 5.05282 112.005 4.71613C112.564 4.36696 113.117 4.19238 113.664 4.19238C114.058 4.19238 114.426 4.2485 114.769 4.36073V6.08161C114.426 5.89456 113.981 5.80103 113.435 5.80103C112.99 5.80103 112.57 5.93197 112.176 6.19384C111.795 6.44324 111.49 6.77994 111.261 7.20392C111.032 7.62791 110.918 8.0893 110.918 8.58811V13.7507H109.297V4.47296Z" fill="currentColor"></path><path d="M103.029 14.0502C102.114 14.0502 101.294 13.8382 100.569 13.4142C99.8574 12.9902 99.2981 12.4041 98.8914 11.6559C98.4846 10.9077 98.2812 10.0597 98.2812 9.112C98.2812 8.21415 98.4719 7.39112 98.8532 6.64292C99.2346 5.88224 99.7748 5.28367 100.474 4.84722C101.186 4.39829 101.999 4.17383 102.914 4.17383C103.829 4.17383 104.63 4.37959 105.317 4.7911C106.016 5.19015 106.55 5.75754 106.918 6.49327C107.287 7.22901 107.471 8.07698 107.471 9.03718C107.471 9.21177 107.458 9.33647 107.433 9.41129H99.9209C99.9464 10.1096 100.118 10.7019 100.436 11.1883C100.753 11.6621 101.148 12.0175 101.618 12.2545C102.101 12.4914 102.597 12.6099 103.105 12.6099C104.3 12.6099 105.221 12.0363 105.87 10.889L107.3 11.5624C106.893 12.3106 106.327 12.9154 105.603 13.3768C104.891 13.8257 104.033 14.0502 103.029 14.0502ZM105.755 8.08322C105.73 7.70911 105.622 7.33501 105.431 6.96091C105.24 6.5868 104.929 6.26881 104.497 6.00694C104.077 5.74507 103.537 5.61413 102.876 5.61413C102.164 5.61413 101.548 5.83859 101.027 6.28752C100.506 6.73644 100.175 7.33501 100.035 8.08322H105.755Z" fill="currentColor"></path><path d="M87.5669 4.47311H89.1113V5.83859H89.1875C89.4926 5.36473 89.9311 4.97192 90.5031 4.66016C91.0751 4.33594 91.736 4.17383 92.486 4.17383C93.2995 4.17383 94.0494 4.39206 94.7358 4.82851C95.4222 5.2525 95.9687 5.83859 96.3755 6.5868C96.7822 7.33501 96.9856 8.17674 96.9856 9.112C96.9856 10.0473 96.7822 10.889 96.3755 11.6372C95.9687 12.3854 95.4222 12.9777 94.7358 13.4142C94.0494 13.8382 93.2995 14.0502 92.486 14.0502C91.736 14.0502 91.0687 13.8943 90.484 13.5826C89.912 13.2583 89.4799 12.853 89.1875 12.3667H89.1113L89.1875 13.6574V17.7912H87.5669V4.47311ZM92.2381 12.6099C92.7974 12.6099 93.3122 12.4665 93.7825 12.1797C94.2655 11.8928 94.6468 11.4876 94.9264 10.9638C95.2188 10.4276 95.365 9.81033 95.365 9.112C95.365 8.41368 95.2188 7.80264 94.9264 7.27889C94.6468 6.74268 94.2655 6.33116 93.7825 6.04435C93.3122 5.75754 92.7974 5.61413 92.2381 5.61413C91.6788 5.61413 91.1577 5.75754 90.6747 6.04435C90.2044 6.31869 89.8231 6.72397 89.5307 7.26019C89.2511 7.78394 89.1113 8.40121 89.1113 9.112C89.1113 9.81033 89.2511 10.4276 89.5307 10.9638C89.8231 11.5 90.2044 11.9116 90.6747 12.1984C91.1577 12.4727 91.6788 12.6099 92.2381 12.6099Z" fill="currentColor"></path><path d="M81.0415 14.0502C80.1136 14.0502 79.2811 13.8382 78.5439 13.4142C77.8066 12.9777 77.2283 12.3854 76.8088 11.6372C76.4021 10.8765 76.1987 10.0348 76.1987 9.112C76.1987 8.18921 76.4021 7.35371 76.8088 6.60551C77.2283 5.84483 77.8066 5.2525 78.5439 4.82851C79.2811 4.39206 80.1136 4.17383 81.0415 4.17383C81.9694 4.17383 82.802 4.39206 83.5392 4.82851C84.2891 5.2525 84.8675 5.84483 85.2742 6.60551C85.6937 7.35371 85.9034 8.18921 85.9034 9.112C85.9034 10.0348 85.6937 10.8765 85.2742 11.6372C84.8675 12.3854 84.2891 12.9777 83.5392 13.4142C82.802 13.8382 81.9694 14.0502 81.0415 14.0502ZM81.0415 12.6099C81.6135 12.6099 82.1474 12.4665 82.6431 12.1797C83.1388 11.8928 83.5328 11.4876 83.8252 10.9638C84.1303 10.4276 84.2828 9.81033 84.2828 9.112C84.2828 8.41368 84.1303 7.80264 83.8252 7.27889C83.5328 6.74268 83.1388 6.33116 82.6431 6.04435C82.1474 5.75754 81.6135 5.61413 81.0415 5.61413C80.4823 5.61413 79.9548 5.75754 79.459 6.04435C78.9633 6.33116 78.5629 6.74268 78.2579 7.27889C77.9655 7.80264 77.8194 8.41368 77.8194 9.112C77.8194 9.81033 77.9655 10.4276 78.2579 10.9638C78.5629 11.4876 78.9633 11.8928 79.459 12.1797C79.9548 12.4665 80.4823 12.6099 81.0415 12.6099Z" fill="currentColor"></path><path d="M72.8408 0.357422H74.4614V13.7504H72.8408V0.357422Z" fill="currentColor"></path><path d="M66.5717 14.0502C65.6565 14.0502 64.8367 13.8382 64.1122 13.4142C63.4004 12.9902 62.8411 12.4041 62.4343 11.6559C62.0276 10.9077 61.8242 10.0597 61.8242 9.112C61.8242 8.21415 62.0149 7.39112 62.3962 6.64292C62.7775 5.88224 63.3177 5.28367 64.0168 4.84722C64.7286 4.39829 65.5421 4.17383 66.4573 4.17383C67.3725 4.17383 68.1732 4.37959 68.8596 4.7911C69.5587 5.19015 70.0926 5.75754 70.4612 6.49327C70.8298 7.22901 71.0141 8.07698 71.0141 9.03718C71.0141 9.21177 71.0014 9.33647 70.976 9.41129H63.4639C63.4893 10.1096 63.6609 10.7019 63.9787 11.1883C64.2965 11.6621 64.6905 12.0175 65.1608 12.2545C65.6438 12.4914 66.1395 12.6099 66.648 12.6099C67.8428 12.6099 68.7643 12.0363 69.4125 10.889L70.8425 11.5624C70.4358 12.3106 69.8701 12.9154 69.1456 13.3768C68.4338 13.8257 67.5758 14.0502 66.5717 14.0502ZM69.2981 8.08322C69.2727 7.70911 69.1647 7.33501 68.974 6.96091C68.7834 6.5868 68.4719 6.26881 68.0398 6.00694C67.6203 5.74507 67.0801 5.61413 66.4192 5.61413C65.7074 5.61413 65.0909 5.83859 64.5697 6.28752C64.0486 6.73644 63.7181 7.33501 63.5783 8.08322H69.2981Z" fill="currentColor"></path><path d="M51.9995 4.47266H53.7536L56.6517 11.8799H56.6898L59.626 4.47266H61.3419L57.4715 13.7504H55.8318L51.9995 4.47266Z" fill="currentColor"></path><path d="M46.9843 14.0502C46.0691 14.0502 45.2493 13.8382 44.5248 13.4142C43.813 12.9902 43.2537 12.4041 42.8469 11.6559C42.4402 10.9077 42.2368 10.0597 42.2368 9.112C42.2368 8.21415 42.4275 7.39112 42.8088 6.64292C43.1901 5.88224 43.7303 5.28367 44.4294 4.84722C45.1412 4.39829 45.9547 4.17383 46.8699 4.17383C47.7851 4.17383 48.5858 4.37959 49.2722 4.7911C49.9713 5.19015 50.5052 5.75754 50.8738 6.49327C51.2424 7.22901 51.4267 8.07698 51.4267 9.03718C51.4267 9.21177 51.414 9.33647 51.3886 9.41129H43.8765C43.9019 10.1096 44.0735 10.7019 44.3913 11.1883C44.7091 11.6621 45.1031 12.0175 45.5734 12.2545C46.0564 12.4914 46.5521 12.6099 47.0606 12.6099C48.2554 12.6099 49.1769 12.0363 49.8251 10.889L51.2551 11.5624C50.8484 12.3106 50.2827 12.9154 49.5582 13.3768C48.8464 13.8257 47.9884 14.0502 46.9843 14.0502ZM49.7107 8.08322C49.6853 7.70911 49.5773 7.33501 49.3866 6.96091C49.196 6.5868 48.8845 6.26881 48.4524 6.00694C48.0329 5.74507 47.4927 5.61413 46.8318 5.61413C46.12 5.61413 45.5035 5.83859 44.9823 6.28752C44.4612 6.73644 44.1307 7.33501 43.9909 8.08322H49.7107Z" fill="currentColor"></path><path d="M30.0054 0.357422H34.1427C35.5409 0.357422 36.7611 0.644235 37.8034 1.21786C38.8457 1.77902 39.6465 2.56464 40.2058 3.57472C40.765 4.5848 41.0447 5.74452 41.0447 7.05389C41.0447 8.36325 40.765 9.52297 40.2058 10.5331C39.6465 11.5431 38.8457 12.335 37.8034 12.9086C36.7611 13.4698 35.5409 13.7504 34.1427 13.7504H30.0054V0.357422ZM34.1427 12.2352C35.757 12.2352 37.0344 11.7801 37.975 10.8698C38.9156 9.95943 39.3859 8.68748 39.3859 7.05389C39.3859 5.4203 38.9156 4.14834 37.975 3.23802C37.0344 2.3277 35.757 1.87254 34.1427 1.87254H31.626V12.2352H34.1427Z" fill="currentColor"></path><path d="M18.2681 4.47296H19.8124V5.98808H19.8887C20.0666 5.47681 20.4289 5.05282 20.9755 4.71613C21.5347 4.36696 22.0877 4.19238 22.6342 4.19238C23.0283 4.19238 23.3969 4.2485 23.7401 4.36073V6.08161C23.3969 5.89456 22.952 5.80103 22.4054 5.80103C21.9605 5.80103 21.5411 5.93197 21.1471 6.19384C20.7657 6.44324 20.4607 6.77994 20.2319 7.20392C20.0031 7.62791 19.8887 8.0893 19.8887 8.58811V13.7507H18.2681V4.47296Z" fill="currentColor"></path><path d="M11.7588 14.0502C10.8309 14.0502 9.99838 13.8382 9.26115 13.4142C8.52393 12.9777 7.94559 12.3854 7.52613 11.6372C7.11939 10.8765 6.91602 10.0348 6.91602 9.112C6.91602 8.18921 7.11939 7.35371 7.52613 6.60551C7.94559 5.84483 8.52393 5.2525 9.26115 4.82851C9.99838 4.39206 10.8309 4.17383 11.7588 4.17383C12.6867 4.17383 13.5193 4.39206 14.2565 4.82851C15.0064 5.2525 15.5848 5.84483 15.9915 6.60551C16.411 7.35371 16.6207 8.18921 16.6207 9.112C16.6207 10.0348 16.411 10.8765 15.9915 11.6372C15.5848 12.3854 15.0064 12.9777 14.2565 13.4142C13.5193 13.8382 12.6867 14.0502 11.7588 14.0502ZM11.7588 12.6099C12.3308 12.6099 12.8647 12.4665 13.3604 12.1797C13.8561 11.8928 14.2501 11.4876 14.5425 10.9638C14.8475 10.4276 15.0001 9.81033 15.0001 9.112C15.0001 8.41368 14.8475 7.80264 14.5425 7.27889C14.2501 6.74268 13.8561 6.33116 13.3604 6.04435C12.8647 5.75754 12.3308 5.61413 11.7588 5.61413C11.1995 5.61413 10.672 5.75754 10.1763 6.04435C9.68061 6.33116 9.28022 6.74268 8.97516 7.27889C8.68281 7.80264 8.53664 8.41368 8.53664 9.112C8.53664 9.81033 8.68281 10.4276 8.97516 10.9638C9.28022 11.4876 9.68061 11.8928 10.1763 12.1797C10.672 12.4665 11.1995 12.6099 11.7588 12.6099Z" fill="currentColor"></path><path d="M2.09493 5.9131H0.321777V4.4728H2.09493V3.18214C2.09493 2.58357 2.22839 2.05982 2.49532 1.6109C2.77496 1.16197 3.14357 0.819044 3.60116 0.582112C4.07146 0.332709 4.5926 0.208008 5.16458 0.208008C5.48235 0.208008 5.73657 0.226713 5.92723 0.264124C6.1306 0.301534 6.34033 0.357649 6.55641 0.432471V1.985C6.14967 1.78548 5.70479 1.68572 5.22178 1.68572C4.80232 1.68572 4.44642 1.83536 4.15408 2.13464C3.86173 2.42146 3.71555 2.82674 3.71555 3.35048V4.4728H6.15602V5.9131H3.71555V13.7506H2.09493V5.9131Z" fill="currentColor"></path></svg></div>
+          <a href="https://policies.google.com/terms" target="_blank">Terms</a><a href="https://policies.google.com/privacy" target="_blank">Privacy</a>
+        </footer>
+      </app-footer>
+    </landing-page>
+  </sdlc-agents-root>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.161.0/three.min.js"></script>
+  <script type="module" src="index.tsx"></script>
+</body>
+
+</html>
