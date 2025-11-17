@@ -1,5 +1,0 @@
-{
-  "description": "A 1:1 replica of the Code Wiki landing page, featuring interactive elements, scroll-based animations, and 3D graphics powered by Three.js.",
-  "requestFramePermissions": [],
-  "name": "App"
-}
