@@ -1,29 +1,47 @@
 // To satisfy TypeScript for the global THREE object from the CDN script
-declare const THREE: any;
+declare const THREE: {
+  Scene: new () => unknown;
+  PerspectiveCamera: new (
+    fov: number,
+    aspect: number,
+    near: number,
+    far: number
+  ) => unknown;
+  WebGLRenderer: new (options: {
+    alpha?: boolean;
+    antialias?: boolean;
+  }) => unknown;
+  Group: new () => unknown;
+  BoxGeometry: new (width: number, height: number, depth: number) => unknown;
+  MeshNormalMaterial: new () => unknown;
+  Mesh: new (geometry: unknown, material: unknown) => unknown;
+};
 
 /**
  * A reusable class to create and manage a Three.js cube animation scene.
  * It encapsulates scene setup, rendering, animation loop, and resizing.
  */
 export class ThreeCube {
-  private container: HTMLElement;
-  private scene: any;
-  private camera: any;
-  private renderer: any;
-  private group: any;
+  private readonly container: HTMLElement;
+  private scene: ReturnType<typeof THREE.Scene>;
+  private camera: ReturnType<typeof THREE.PerspectiveCamera>;
+  private renderer: ReturnType<typeof THREE.WebGLRenderer>;
+  private group: ReturnType<typeof THREE.Group>;
   private resizeObserver: ResizeObserver;
 
   constructor(containerSelector: string) {
     this.container = document.querySelector<HTMLElement>(containerSelector);
     if (!this.container) {
-      console.error(`Container element not found for selector: ${containerSelector}`);
+      console.error(
+        `Container element not found for selector: ${containerSelector}`
+      );
       return;
     }
     this.init();
   }
 
   private init() {
-    if (!this.container || typeof THREE === 'undefined') {
+    if (!this.container || typeof THREE === "undefined") {
       return;
     }
 
@@ -67,13 +85,13 @@ export class ThreeCube {
     for (let x = 0; x < mainCubeSize; x++) {
       for (let y = 0; y < mainCubeSize; y++) {
         for (let z = 0; z < mainCubeSize; z++) {
-            const smallCube = new THREE.Mesh(geometry, material);
-            smallCube.position.set(
-              (x - half) * step,
-              (y - half) * step,
-              (z - half) * step
-            );
-            group.add(smallCube);
+          const smallCube = new THREE.Mesh(geometry, material);
+          smallCube.position.set(
+            (x - half) * step,
+            (y - half) * step,
+            (z - half) * step
+          );
+          group.add(smallCube);
         }
       }
     }
@@ -81,25 +99,29 @@ export class ThreeCube {
   }
 
   private animate() {
-    if (!this.renderer) return;
+    if (!this.renderer) {
+      return;
+    }
     requestAnimationFrame(this.animate);
 
-    if(this.group) {
-        // Group rotation
-        this.group.rotation.x += 0.002;
-        this.group.rotation.y += 0.003;
+    if (this.group) {
+      // Group rotation
+      this.group.rotation.x += 0.002;
+      this.group.rotation.y += 0.003;
 
-        // Individual cube rotation
-        this.group.children.forEach((cube: any) => {
-            cube.rotation.x += 0.01;
-            cube.rotation.y += 0.01;
-        });
+      // Individual cube rotation
+      for (const cube of this.group.children) {
+        cube.rotation.x += 0.01;
+        cube.rotation.y += 0.01;
+      }
     }
     this.renderer.render(this.scene, this.camera);
   }
 
   private handleResize() {
-    if (!this.container || !this.renderer) return;
+    if (!(this.container && this.renderer)) {
+      return;
+    }
     const width = this.container.clientWidth;
     const height = this.container.clientHeight;
 
