@@ -21,39 +21,41 @@ void i18next
   .init({
     // Default and fallback language
     fallbackLng: 'en',
-    debug: false, // Set to true for debugging
-    
+    debug: true, // Set to true for debugging
+
     // Detection options
     detection: {
       order: ['localStorage', 'navigator', 'htmlTag'],
       caches: ['localStorage'],
       lookupLocalStorage: 'i18nextLng'
     },
-    
+
+    // Language mapping
+    load: 'languageOnly',
+
     // Backend options
     backend: {
       loadPath: '/locales/{{lng}}/{{ns}}.json'
     },
-    
+
     // Interpolation
     interpolation: {
       escapeValue: false // Not needed for React
     },
-    
+
     // Load namespaces
     ns: ['translation'],
     defaultNS: 'translation'
   });
 
-// Handle RTL for Arabic
-i18next.on('languageChanged', (lng) => {
-  const dir = supportedLanguages[lng as keyof typeof supportedLanguages]?.dir || 'ltr';
-  document.documentElement.dir = dir;
-  document.documentElement.lang = lng;
-  
-  // Update page title
-  document.title = i18next.t('title');
-});
+// Handle RTL for Arabic (guard against SSR)
+if (typeof document !== "undefined") {
+  i18next.on('languageChanged', (lng) => {
+    const dir = supportedLanguages[lng as keyof typeof supportedLanguages]?.dir || 'ltr';
+    document.documentElement.dir = dir;
+    document.documentElement.lang = lng;
+  });
+}
 
 // Export for use in components
 export default i18next;
