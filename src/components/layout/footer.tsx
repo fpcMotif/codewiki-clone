@@ -63,10 +63,7 @@ export function Footer() {
           </a>
         </div>
         <div className="footer-locale">
-          <select aria-label="Language" data-i18n="footer.languageLabel">
-            <option value="zh-CN">简体中文</option>
-            <option value="en">English</option>
-          </select>
+          {/* Language selector removed */}
         </div>
       </footer>
     </app-footer>

@@ -1,5 +1,5 @@
-import { SearchIcon } from "../icons/search-icon";
-import { ThemeSwitcher } from "../theme-switcher";
+import { SearchIcon } from "@/components/icons/search-icon";
+import { ThemeSwitcher } from "@/components/theme-switcher";
 
 export function Header() {
   return (
@@ -38,33 +38,10 @@ export function Header() {
           </button>
         </div>
         <div className="actions">
-          <language-switcher>
-            <div className="language-switcher">
-              <select
-                aria-label="Language"
-                className="language-select"
-                data-i18n="languageSwitcher.label"
-                onChange={(e) => {
-                  const fn = (
-                    window as { changeLanguage?: (lng: string) => void }
-                  ).changeLanguage;
-                  fn?.(e.target.value);
-                }}
-              >
-                <option value="en">English</option>
-                <option value="zh-CN">简体中文</option>
-                <option value="zh-TW">繁體中文</option>
-                <option value="ja">日本語</option>
-                <option value="de">Deutsch</option>
-                <option value="fr">Français</option>
-                <option value="ko">한국어</option>
-                <option value="ar">العربية</option>
-              </select>
-            </div>
-          </language-switcher>
           <ThemeSwitcher />
         </div>
       </header>
     </app-bar>
   );
 }
+
