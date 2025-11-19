@@ -1,20 +1,32 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# SolidStart
 
-# Run and deploy your AI Studio app
+Everything you need to build a Solid project, powered by [`solid-start`](https://start.solidjs.com);
 
-This contains everything you need to run your app locally.
+## Creating a project
 
-View your app in AI Studio: https://ai.studio/apps/drive/109PKXjsoR1DSppsjxg3G3MV4PWPEbHza
+```bash
+# create a new project in the current directory
+npm init solid@latest
 
-## Run Locally
+# create a new project in my-app
+npm init solid@latest my-app
+```
 
-**Prerequisites:**  Node.js
+## Developing
 
+Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+```bash
+npm run dev
+
+# or start the server and open the app in a new browser tab
+npm run dev -- --open
+```
+
+## Building
+
+Solid apps are built with _presets_, which optimise your project for deployment to different environments.
+
+By default, `npm run build` will generate a Node app that you can run with `npm start`. To use a different preset, add it to the `devDependencies` in `package.json` and specify in your `app.config.js`.
+
+## This project was created with the [Solid CLI](https://github.com/solidjs-community/solid-cli)

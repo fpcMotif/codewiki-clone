@@ -4,7 +4,7 @@
 
 /* Define CSS custom properties for font families */
 :root {
-  --font-text: "Roboto", system-ui, -apple-system, sans-serif;
-  --font-heading: "Roboto", system-ui, -apple-system, sans-serif;
-  --font-code: "Roboto", "Courier New", monospace;
+    --font-text: "Roboto", system-ui, -apple-system, sans-serif;
+    --font-heading: "Roboto", system-ui, -apple-system, sans-serif;
+    --font-code: "Roboto", "Courier New", monospace;
 }

@@ -1,0 +1,115 @@
+@import "tailwindcss";
+@import "./fonts.css";
+
+@theme {
+  /* Color System - Using custom properties for light/dark mode */
+  --color-surface: light-dark(#f9fbfe, #0f172a);
+  --color-on-surface: light-dark(#002549, #f8fafc);
+  --color-accent: light-dark(#44a2ff, #38bdf8);
+  --color-on-accent: light-dark(#007af4, #ffffff);
+  --color-accent-surface: light-dark(#deecfd, #1e293b);
+  --color-neutral: light-dark(#5e5e5e, #94a3b8);
+
+  /* Typography */
+  --font-heading: "Google Sans", sans-serif;
+  --font-text: "Google Sans Text", sans-serif;
+  --font-code: "Google Sans Code", monospace;
+
+  /* Spacing */
+  --spacing-app-layout-inline: 24px;
+
+  /* Layout */
+  --height-app-bar: 104px;
+
+  /* Hero-specific tokens */
+  --hero-title-size-min: 64px;
+  --hero-title-size-mid: 8vw;
+  --hero-title-size-max: 140px;
+  --hero-subtitle-size: 24px;
+  --hero-padding-top: 160px;
+  --hero-gap: 40px;
+}
+
+@media (max-width: 768px) {
+  @theme {
+    --spacing-app-layout-inline: 16px;
+    --hero-padding-top: 80px;
+    --hero-subtitle-size: 16px;
+  }
+}
+
+@layer base {
+  html {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  body {
+    flex: 1 1;
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -webkit-tap-highlight-color: transparent;
+    background-color: var(--color-surface);
+    color: var(--color-on-surface);
+    font-family: var(--font-text);
+    overflow-x: hidden;
+    transition:
+      background-color 0.3s ease,
+      color 0.3s ease;
+  }
+
+  body:not(.dark-theme) {
+    color-scheme: light;
+  }
+
+  body.dark-theme {
+    color-scheme: dark;
+  }
+
+  * {
+    box-sizing: border-box;
+    min-width: 0;
+    margin: 0;
+  }
+
+  html * {
+    scroll-margin-top: var(--height-app-bar);
+  }
+
+  ::selection {
+    color: var(--color-on-surface);
+    background: var(--color-accent-surface);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-heading);
+    font-weight: 500;
+  }
+
+  code,
+  pre {
+    font-family: var(--font-code);
+  }
+
+  input:focus {
+    outline: none;
+  }
+
+  canvas {
+    display: block;
+    pointer-events: none;
+    width: 100%;
+    height: 100%;
+  }
+}

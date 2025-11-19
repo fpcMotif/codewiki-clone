@@ -1,42 +1,44 @@
-import { createFileRoute } from "@tanstack/react-router";
 import { BrowserSection } from "@/components/home/browser-section";
 import { FeaturedRepos } from "@/components/home/featured-repos";
 import { FeaturesSection } from "@/components/home/features-section";
 import { HeroSection } from "@/components/home/hero-section";
 import { Footer } from "@/components/layout/footer";
 import { Header } from "@/components/layout/header";
-import { useClientBootstrap } from "@/hooks/use-client-bootstrap";
-import { useDevReactGrab } from "@/hooks/use-dev-react-grab";
+import { Title } from "@solidjs/meta";
+import { onMount } from "solid-js";
 
-export const Route = createFileRoute("/")({
-  component: HomeComponent,
-});
+export default function Home() {
+    onMount(async () => {
+        // Bootstrap client-side DOM behaviors (i18n, observers)
+        try {
+            const { bootstrap } = await import("@/client/bootstrap");
+            bootstrap();
+        } catch (error) {
+            console.error("Failed to bootstrap client-side behaviors:", error);
+        }
+    });
 
-function HomeComponent() {
-  // Load react-grab in dev (matches original HTML inline script)
-  useDevReactGrab();
+    return (
+        <>
+            <Title>Code Wiki</Title>
+            <sdlc-agents-root>
+                <landing-page>
+                    <Header />
 
-  // Bootstrap client-side DOM behaviors (i18n, theme, observers, Three.js)
-  useClientBootstrap();
+                    <app-home>
+                        <div class="home-container">
+                            <HeroSection />
+                            <section class="sticky-hero-cube-section" />
 
-  return (
-    <sdlc-agents-root>
-      <landing-page>
-        <Header />
+                            <FeaturedRepos />
+                            <FeaturesSection />
 
-        <app-home>
-          <div className="home-container">
-            <HeroSection />
-            <section className="sticky-hero-cube-section" />
-
-            <FeaturedRepos />
-            <FeaturesSection />
-
-            <BrowserSection />
-          </div>
-        </app-home>
-      </landing-page>
-      <Footer />
-    </sdlc-agents-root>
-  );
+                            <BrowserSection />
+                        </div>
+                    </app-home>
+                </landing-page>
+                <Footer />
+            </sdlc-agents-root>
+        </>
+    );
 }
