@@ -2,19 +2,19 @@
 	import { themeStore } from "$lib/stores/theme.svelte";
 	import { i18n } from "$lib/i18n.svelte";
 
-	const theme = themeStore();
+	let label = $derived(i18n.t("header.themeToggleLabel"));
 </script>
 
 <div class="theme-switcher">
 	<button
-		aria-label={i18n.t("header.themeToggleLabel")}
-		title={i18n.t("header.themeToggleLabel")}
+		aria-label={label}
+		title={label}
 		class="theme-button"
-		onclick={() => theme.toggle()}
+		onclick={themeStore.toggle}
 		tabindex="-1"
 		type="button"
 	>
-		{#if theme.isDark}
+		{#if themeStore.isDark}
 			<!-- Moon icon for dark mode -->
 			<svg
 				aria-hidden="true"

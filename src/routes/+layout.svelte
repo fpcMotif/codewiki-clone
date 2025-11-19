@@ -1,21 +1,7 @@
 <script lang="ts">
-    import { themeStore } from "$lib/stores/theme.svelte";
     import "$lib/app.css";
 
     let { children } = $props();
-
-    // Initialize theme from store
-    const theme = themeStore();
-
-    // Apply theme class to body
-    $effect(() => {
-        if (typeof document !== "undefined") {
-            document.body.classList.toggle(
-                "dark-theme",
-                theme.current === "dark",
-            );
-        }
-    });
 </script>
 
 <svelte:head>

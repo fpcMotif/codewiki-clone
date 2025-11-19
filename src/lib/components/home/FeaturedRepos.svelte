@@ -57,19 +57,25 @@
 			stars: "19.8k",
 		},
 	];
+
+	let featuredTitle = $derived(i18n.t("featured.title") || "Featured Repositories");
+	let repositories = $derived(REPOSITORIES.map(repo => ({
+		...repo,
+		displayDescription: i18n.t(repo.descriptionKey) || repo.description
+	})));
 </script>
 
 <section class="featured-section">
-	<h2>{i18n.t("featured.title") || "Featured Repositories"}</h2>
+	<h2>{featuredTitle}</h2>
 	<div class="repositories-grid">
-		{#each REPOSITORIES as repo}
+		{#each repositories as repo}
 			<a class="repo-card shine" href={repo.url}>
 				<div class="repo-content">
 					<div class="repo-header">
 						<h3>{repo.name}</h3>
 					</div>
 					<p class="repo-description">
-						<span>{i18n.t(repo.descriptionKey) || repo.description}</span>
+						<span>{repo.displayDescription}</span>
 					</p>
 					<span class="star-count">
 						<StarIcon />

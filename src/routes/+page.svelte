@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
 	import Header from '$lib/components/layout/Header.svelte';
 	import Footer from '$lib/components/layout/Footer.svelte';
 	import HeroSection from '$lib/components/home/HeroSection.svelte';
@@ -8,7 +7,7 @@
 	import BrowserSection from '$lib/components/home/BrowserSection.svelte';
 	import { bootstrap } from '$lib/bootstrap';
 
-	onMount(() => {
+	$effect(() => {
 		bootstrap();
 	});
 </script>
