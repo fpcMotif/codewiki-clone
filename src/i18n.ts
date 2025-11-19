@@ -1,6 +1,7 @@
 import i18next from "i18next";
 import LanguageDetector from "i18next-browser-languagedetector";
 import HttpApi from "i18next-http-backend";
+import { browser } from "$app/environment";
 
 // Supported languages
 export const supportedLanguages = {
@@ -15,41 +16,41 @@ export const supportedLanguages = {
 };
 
 // Initialize i18n
-i18next
-    .use(HttpApi)
-    .use(LanguageDetector)
-    .init({
-        // Default and fallback language
-        fallbackLng: "en",
-        debug: true, // Set to true for debugging
+if (browser) {
+    i18next
+        .use(HttpApi)
+        .use(LanguageDetector)
+        .init({
+            // Default and fallback language
+            fallbackLng: "en",
+            debug: true, // Set to true for debugging
 
-        // Detection options
-        detection: {
-            order: ["localStorage", "navigator", "htmlTag"],
-            caches: ["localStorage"],
-            lookupLocalStorage: "i18nextLng",
-        },
+            // Detection options
+            detection: {
+                order: ["localStorage", "navigator", "htmlTag"],
+                caches: ["localStorage"],
+                lookupLocalStorage: "i18nextLng",
+            },
 
-        // Language mapping
-        load: "languageOnly",
+            // Language mapping
+            load: "languageOnly",
 
-        // Backend options
-        backend: {
-            loadPath: "/locales/{{lng}}/{{ns}}.json",
-        },
+            // Backend options
+            backend: {
+                loadPath: "/locales/{{lng}}/{{ns}}.json",
+            },
 
-        // Interpolation
-        interpolation: {
-            escapeValue: false, // Not needed for Solid
-        },
+            // Interpolation
+            interpolation: {
+                escapeValue: false, // Not needed for Svelte
+            },
 
-        // Load namespaces
-        ns: ["translation"],
-        defaultNS: "translation",
-    });
+            // Load namespaces
+            ns: ["translation"],
+            defaultNS: "translation",
+        });
 
-// Handle RTL for Arabic (guard against SSR)
-if (typeof document !== "undefined") {
+    // Handle RTL for Arabic
     i18next.on("languageChanged", (lng) => {
         const dir =
             supportedLanguages[lng as keyof typeof supportedLanguages]?.dir || "ltr";
