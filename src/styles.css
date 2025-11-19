@@ -2,17 +2,17 @@
 @import "tailwindcss";
 
 /* ===== Font Imports ===== */
-@import './fonts.css';
+@import "./fonts.css";
 
 /* ===== Tailwind v4 Theme Configuration ===== */
 @theme {
   /* Color System - Using custom properties for light/dark mode */
-  --color-surface: light-dark(#f9fbfe, #000);
-  --color-on-surface: light-dark(#002549, #fff);
-  --color-accent: light-dark(#44a2ff, #007af4);
-  --color-on-accent: light-dark(#007af4, #fff);
-  --color-accent-surface: light-dark(#deecfd, #253145);
-  --color-neutral: light-dark(#5e5e5e, #818181);
+  --color-surface: light-dark(#f9fbfe, #0f172a);
+  --color-on-surface: light-dark(#002549, #f8fafc);
+  --color-accent: light-dark(#44a2ff, #38bdf8);
+  --color-on-accent: light-dark(#007af4, #ffffff);
+  --color-accent-surface: light-dark(#deecfd, #1e293b);
+  --color-neutral: light-dark(#5e5e5e, #94a3b8);
 
   /* Typography */
   --font-heading: "Google Sans", sans-serif;
@@ -64,6 +64,9 @@
     color: var(--color-on-surface);
     font-family: var(--font-text);
     overflow-x: hidden;
+    transition:
+      background-color 0.3s ease,
+      color 0.3s ease;
   }
 
   body:not(.dark-theme) {
@@ -107,7 +110,6 @@
   input:focus {
     outline: none;
   }
-
 
   sdlc-agents-root,
   landing-page,
@@ -235,7 +237,10 @@
     );
     border-radius: 99px;
     padding: 1px;
-    transition: opacity 0.2s ease, background-color 0.2s ease, scale 0.2s ease,
+    transition:
+      opacity 0.2s ease,
+      background-color 0.2s ease,
+      scale 0.2s ease,
       transform 0.2s ease;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
     opacity: 0;
@@ -308,7 +313,6 @@
     transition: color 0.2s ease;
   }
 
-
   .header-search-button:disabled {
     pointer-events: none;
     opacity: 0.5;
@@ -335,24 +339,30 @@
     width: 42px;
     height: 42px;
     padding: 0;
-    color: var(--color-neutral);
-    background: color-mix(
-      in srgb,
-      var(--color-surface) 99%,
-      var(--color-neutral)
-    );
+    color: var(--color-on-surface);
+    background: var(--color-surface);
     border: 1px solid
       color-mix(in srgb, var(--color-surface) 80%, var(--color-neutral));
     border-radius: 99px;
     cursor: pointer;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-    transition: color 0.2s ease;
+    transition:
+      color 0.2s ease,
+      background-color 0.2s ease,
+      border-color 0.2s ease;
     user-select: none;
   }
 
-
   .theme-button:hover {
     color: var(--color-on-surface);
+    background-color: var(--color-accent-surface);
+    border-color: var(--color-accent);
+  }
+
+  .theme-button svg {
+    width: 24px;
+    height: 24px;
+    display: block;
   }
 
   /* Home Page & Hero Section */
@@ -429,7 +439,8 @@
     padding: 1px;
     text-decoration: none;
     transition: background-color 0.2s ease;
-    box-shadow: 0 34px 84px -30px color-mix(in srgb, var(--color-accent) 25%, transparent);
+    box-shadow: 0 34px 84px -30px
+      color-mix(in srgb, var(--color-accent) 25%, transparent);
   }
 
   .repo-card.shine:after,
@@ -508,7 +519,6 @@
     font-family: var(--font-text);
     color: var(--color-neutral);
   }
-
 
   /* Sticky Scroll Section */
   .sticky-section {
@@ -657,7 +667,8 @@
     background-color: var(--color-on-surface);
     border-radius: 24px;
     padding: 1px;
-    box-shadow: 0 34px 84px -30px color-mix(in srgb, var(--color-accent) 30%, transparent);
+    box-shadow: 0 34px 84px -30px
+      color-mix(in srgb, var(--color-accent) 30%, transparent);
     margin-top: 60px;
     text-decoration: none;
     transition: background-color 0.2s ease;
@@ -676,7 +687,9 @@
     color: var(--color-neutral);
     margin-left: auto;
     content: "arrow_outward";
-    font-family: Google Symbols, sans-serif;
+    font-family:
+      Google Symbols,
+      sans-serif;
     font-size: 24px;
     height: 32px;
     width: 32px;
@@ -723,7 +736,9 @@
 
   .split-section .icon-grid li:before {
     color: var(--color-on-accent);
-    font-family: Google Symbols, sans-serif;
+    font-family:
+      Google Symbols,
+      sans-serif;
     font-size: 24px;
     display: flex;
     align-items: center;
@@ -772,7 +787,9 @@
 
   .split-section .icon-list li:before {
     color: var(--color-on-accent);
-    font-family: Google Symbols, sans-serif;
+    font-family:
+      Google Symbols,
+      sans-serif;
     font-size: 24px;
     display: flex;
     align-items: center;
@@ -1249,7 +1266,11 @@
 
   /* Hero-specific utilities */
   .hero-title {
-    font-size: clamp(var(--hero-title-size-min), var(--hero-title-size-mid), var(--hero-title-size-max));
+    font-size: clamp(
+      var(--hero-title-size-min),
+      var(--hero-title-size-mid),
+      var(--hero-title-size-max)
+    );
     font-weight: 500;
     letter-spacing: -0.04em;
     line-height: 1;
@@ -1282,9 +1303,10 @@
   }
 
   .search-glow {
-    box-shadow: 
+    box-shadow:
       0 34px 84px -30px rgba(0, 0, 0, 0.149),
-      0 -80px 100px 60px color-mix(in srgb, var(--color-accent) 20%, transparent);
+      0 -80px 100px 60px
+      color-mix(in srgb, var(--color-accent) 20%, transparent);
   }
 }
 
@@ -1319,7 +1341,6 @@
     right: 12px;
   }
 
-
   .theme-button {
     margin-left: 0;
   }
@@ -1345,7 +1366,6 @@
   .search-button {
     right: 24px;
   }
-
 
   .hero-background {
     display: none;
