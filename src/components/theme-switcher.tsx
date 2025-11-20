@@ -1,18 +1,18 @@
-import { useTranslation } from "react-i18next";
-import { useTheme } from "@/contexts/theme-context";
+import i18next from "i18next";
+import { ThemeProvider, useTheme } from "@/contexts/theme-context";
 
 export function ThemeSwitcher() {
   const { isDark, toggleTheme } = useTheme();
-  const { t } = useTranslation();
+  const label = i18next.t("header.themeToggleLabel");
 
   return (
     <div className="theme-switcher">
       <button
-        aria-label={t("header.themeToggleLabel")}
-        title={t("header.themeToggleLabel")}
+        aria-label={label}
         className="theme-button"
         onClick={toggleTheme}
         tabIndex={-1}
+        title={label}
         type="button"
       >
         {isDark ? (
@@ -38,5 +38,13 @@ export function ThemeSwitcher() {
         )}
       </button>
     </div>
+  );
+}
+
+export function ThemeToggle() {
+  return (
+    <ThemeProvider>
+      <ThemeSwitcher />
+    </ThemeProvider>
   );
 }

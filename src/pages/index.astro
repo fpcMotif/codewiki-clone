@@ -1,0 +1,39 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Header from "../components/astro/Header.astro";
+import HeroSection from "../components/astro/HeroSection.astro";
+import FeaturedRepos from "../components/astro/FeaturedRepos.astro";
+import FeaturesSection from "../components/astro/FeaturesSection.astro";
+import BrowserSection from "../components/astro/BrowserSection.astro";
+import Footer from "../components/astro/Footer.astro";
+---
+
+<Layout
+  title="Code Wiki - A new perspective on development for the intelligent agent era"
+>
+  <sdlc-agents-root>
+    <landing-page>
+      <Header />
+
+      <app-home>
+        <div class="home-container">
+          <HeroSection />
+          <section class="sticky-hero-cube-section"></section>
+
+          <FeaturedRepos />
+          <FeaturesSection />
+
+          <BrowserSection />
+        </div>
+      </app-home>
+    </landing-page>
+    <Footer />
+  </sdlc-agents-root>
+
+  <script>
+    import { bootstrap } from "@/client/bootstrap";
+
+    // Initialize client-side behaviors: i18n, theme, observers, animations
+    bootstrap();
+  </script>
+</Layout>

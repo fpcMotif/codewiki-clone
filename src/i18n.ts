@@ -1,7 +1,6 @@
 import i18next from "i18next";
 import LanguageDetector from "i18next-browser-languagedetector";
 import HttpApi from "i18next-http-backend";
-import { initReactI18next } from "react-i18next";
 
 // Supported languages
 export const supportedLanguages = {
@@ -15,11 +14,10 @@ export const supportedLanguages = {
   ar: { name: "العربية", dir: "rtl" },
 };
 
-// Initialize i18n
+// Initialize i18n (framework-agnostic)
 i18next
   .use(HttpApi)
   .use(LanguageDetector)
-  .use(initReactI18next)
   .init({
     // Default and fallback language
     fallbackLng: "en",

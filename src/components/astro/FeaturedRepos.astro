@@ -1,4 +1,5 @@
-import { StarIcon } from "@/components/icons/star-icon";
+---
+import { StarIcon } from "../icons/star-icon";
 
 type Repository = {
   name: string;
@@ -55,29 +56,28 @@ const REPOSITORIES: Repository[] = [
     stars: "19.8k",
   },
 ];
+---
 
-export function FeaturedRepos() {
-  return (
-    <section className="featured-section">
-      <h2 data-i18n="featured.title">Featured Repositories</h2>
-      <div className="repositories-grid">
-        {REPOSITORIES.map((repo) => (
-          <a className="repo-card shine" href={repo.url} key={repo.name}>
-            <div className="repo-content">
-              <div className="repo-header">
-                <h3>{repo.name}</h3>
-              </div>
-              <p className="repo-description">
-                <span data-i18n={repo.descriptionKey}>{repo.description}</span>
-              </p>
-              <span className="star-count">
-                <StarIcon />
-                {repo.stars}
-              </span>
+<section class="featured-section">
+  <h2 data-i18n="featured.title">Featured Repositories</h2>
+  <div class="repositories-grid">
+    {
+      REPOSITORIES.map((repo) => (
+        <a class="repo-card shine" href={repo.url}>
+          <div class="repo-content">
+            <div class="repo-header">
+              <h3>{repo.name}</h3>
             </div>
-          </a>
-        ))}
-      </div>
-    </section>
-  );
-}
+            <p class="repo-description">
+              <span data-i18n={repo.descriptionKey}>{repo.description}</span>
+            </p>
+            <span class="star-count">
+              <StarIcon />
+              {repo.stars}
+            </span>
+          </div>
+        </a>
+      ))
+    }
+  </div>
+</section>

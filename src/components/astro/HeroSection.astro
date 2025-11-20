@@ -1,0 +1,32 @@
+---
+import { SearchIcon } from "@/components/icons/search-icon";
+---
+
+<section class="hero-section">
+  <h1 class="hero-title">Code Wiki</h1>
+  <p
+    class="hero-subtitle-gradient"
+    data-i18n="hero.subtitle"
+  >
+    A new perspective on development for the intelligent agent era.
+    Gemini-generated documentation, always up to date.
+  </p>
+  <div class="search-container search-border-gradient search-glow shine">
+    <input
+      autocomplete="off"
+      class="search-input glassmorphism-search"
+      data-i18n="hero.searchPlaceholder"
+      placeholder="Find open source repositories"
+      tabindex="-1"
+      type="text"
+    />
+    <button
+      class="search-button"
+      disabled
+      tabindex="-1"
+      type="button"
+    >
+      <SearchIcon />
+    </button>
+  </div>
+</section>
